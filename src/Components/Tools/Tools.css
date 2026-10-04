@@ -1,0 +1,178 @@
+/* ===== Tools Section Container ===== */
+.S2-tools {
+  position: relative;
+  width: 100%;
+  border-top: 1px solid #ffffff14;
+  border-bottom: 1px solid #ffffff14;
+  background: #0c100c;
+  overflow: hidden;
+  z-index: 10;
+}
+
+/* Subtle top glow line */
+.S2-tools::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(198, 241, 53, 0.3) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.S2-tools-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  width: 100%;
+  max-width: var(--max-width, 1536px);
+  margin: 0 auto;
+  padding: 35px 10px;
+}
+
+/* Left label area */
+.S2-tools-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.S2-tools-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent, #c6f135);
+  box-shadow: 0 0 8px var(--accent, #c6f135);
+}
+
+.S2-tools-label {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #f5f7faa6;
+}
+
+/* Right ticker container */
+.S2-tools-ticker-wrap {
+  flex: 1;
+  min-width: 0; /* lets the flex child shrink so the ticker can clip */
+  position: relative;
+}
+
+/* ===== Tech pill / badge item ===== */
+/* backdrop-filter was removed on purpose: every pill moves every frame, and
+   the blur had nothing to blur (the background is one flat color), so it cost
+   GPU time without changing how it looks. */
+.S2-tech-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  /* only the properties that really change (not "all") */
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s ease;
+  cursor: default;
+}
+
+.S2-tech-icon {
+  flex-shrink: 0;
+  font-size: 18px;
+  color: rgba(245, 247, 250, 0.7);
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.S2-tech-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: rgba(245, 247, 250, 0.85);
+  white-space: nowrap;
+  transition: color 0.25s ease;
+}
+
+/* Hover interactions: only on devices that really have hover (not touch screens) */
+@media (hover: hover) {
+  .S2-tech-card:hover {
+    background: rgba(198, 241, 53, 0.06);
+    border-color: rgba(198, 241, 53, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px -3px rgba(198, 241, 53, 0.15);
+  }
+
+  .S2-tech-card:hover .S2-tech-icon {
+    color: var(--brand-icon-color, var(--accent, #c6f135));
+    transform: scale(1.1);
+  }
+
+  .S2-tech-card:hover .S2-tech-name {
+    color: #ffffff;
+  }
+}
+
+/* ===== Responsive Breakpoints ===== */
+@media screen and (max-width: 1024px) {
+  .S2-tools-inner {
+    gap: 28px;
+    padding: 20px 20px;
+  }
+
+  .S2-tools-label {
+    font-size: 12.5px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .S2-tools-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px 16px;
+  }
+
+  .S2-tools-ticker-wrap {
+    width: 100%;
+  }
+
+  .S2-tech-card {
+    padding: 7px 14px;
+    gap: 8px;
+  }
+
+  .S2-tech-icon {
+    font-size: 16px;
+  }
+
+  .S2-tech-name {
+    font-size: 12.5px;
+  }
+}
+
+/* Accessibility: user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .S2-tech-card,
+  .S2-tech-icon,
+  .S2-tech-name {
+    transition: none;
+  }
+
+  .S2-tech-card:hover {
+    transform: none;
+  }
+}

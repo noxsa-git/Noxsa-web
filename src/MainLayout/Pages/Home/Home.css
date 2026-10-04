@@ -1,0 +1,417 @@
+/* ===== Global Brand Palette ===== */
+.home {
+  --bg: #0a0d0a;
+  --fg: #f5f7fa;
+  --muted: #f5f7fab8;
+  --muted-dim: #f5f7fa73;
+  --accent: #c6f135;
+  --accent-hover: #d5ff46;
+  --accent-soft: #c6f1351f;
+  --accent-glow: #c6f13547;
+  --border: #ffffff1a;
+  --border-active: #c6f13559;
+  --card-bg: #10161080;
+  --max-width: 1536px;
+
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Screen-reader utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== Hero Section ===== */
+.S1-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 130px 10px 80px;
+  overflow: hidden;
+  background-color: var(--bg);
+  isolation: isolate;
+}
+
+/* ===== Static background (mobile, loading poster, fallback) ===== */
+.S1-static-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      60% 50% at 78% 80%,
+      rgba(198, 241, 53, 0.11) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      55% 45% at 96% 38%,
+      rgba(12, 30, 14, 0.9) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      70% 60% at 30% 112%,
+      rgba(22, 52, 26, 0.45) 0%,
+      transparent 70%
+    ),
+    linear-gradient(180deg, #050d07 0%, #0a0d0a 100%);
+}
+
+.S1-static-bg svg {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 62%;
+}
+
+/* ===== WebGL shader container (desktop only) ===== */
+.S1-hero-shader {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none; /* mouse is read from window, so no events needed here */
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.S1-hero-shader.is-ready {
+  opacity: 0.95;
+}
+
+.gradient-waves-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Ambient vignette so text is always readable */
+.S1-hero-ambient-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 65% 55% at 20% 45%,
+      rgba(10, 13, 10, 0.88) 0%,
+      rgba(10, 13, 10, 0.4) 60%,
+      transparent 100%
+    ),
+    linear-gradient(to bottom, transparent 65%, var(--bg) 100%),
+    linear-gradient(to top, transparent 75%, var(--bg) 100%);
+}
+
+/* Hero content frame */
+.S1-hero-inner {
+  position: relative;
+  z-index: 4;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.S1-hero-content {
+  max-width: 920px;
+}
+
+/* ===== Badges Row ===== */
+.S1-hero-badge-wrap {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+/* NOTE: backdrop-filter removed on purpose. Blurring a moving canvas
+   every frame is expensive. A slightly stronger solid background looks
+   almost the same and costs nothing. */
+.S1-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid var(--border-active);
+  border-radius: 999px;
+  background: rgba(20, 30, 14, 0.7);
+  box-shadow: 0 0 16px -4px var(--accent-glow);
+}
+
+.S1-hero-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.S1-hero-badge-text {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ebfaaf;
+}
+
+/* Secondary status pill */
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* ===== Typography ===== */
+.S1-hero-title {
+  margin: 0;
+  font-size: clamp(40px, 6.2vw, 84px);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+}
+
+.S1-hero-title-stack {
+  display: grid;
+  min-height: 2.15em;
+}
+
+.S1-hero-title-line {
+  display: block;
+  grid-area: 1 / 1;
+}
+
+.S1-hero-word {
+  display: inline-block;
+}
+
+.S1-hero-word--accent {
+  color: var(--accent);
+  text-shadow: 0 0 32px rgba(198, 241, 53, 0.25);
+}
+
+/* Subtitle */
+.S1-hero-subtitle {
+  margin: 28px 0 0;
+  max-width: 620px;
+  font-size: clamp(16px, 1.25vw, 19px);
+  line-height: 1.65;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* ===== CTAs ===== */
+.S1-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.S1-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 30px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  /* only the properties that really change (not "all") */
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.S1-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.S1-btn--primary {
+  background: var(--accent);
+  color: #080c08;
+  box-shadow: 0 8px 24px -6px rgba(198, 241, 53, 0.35);
+}
+
+.S1-btn--primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -4px rgba(198, 241, 53, 0.45);
+}
+
+.S1-btn--secondary {
+  background: rgba(24, 30, 24, 0.7);
+  color: var(--fg);
+  border-color: var(--border);
+}
+
+.S1-btn--secondary:hover {
+  background: rgba(40, 48, 40, 0.85);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+/* ===== Credibility / Meta Proof Row ===== */
+.S1-hero-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 56px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.S1-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.S1-meta-val {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.S1-sparkle-icon {
+  color: var(--accent);
+}
+
+.S1-meta-highlight {
+  color: var(--accent);
+}
+
+.S1-meta-label {
+  font-size: 13px;
+  color: var(--muted-dim);
+  font-weight: 400;
+}
+
+.S1-meta-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ===== Responsive Breakpoints ===== */
+@media screen and (max-width: 1024px) {
+  .S1-hero {
+    padding: 110px 10px 70px;
+  }
+
+  .S1-hero-meta {
+    gap: 18px;
+    margin-top: 48px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .S1-hero {
+    padding: 95px 10px 60px;
+    align-items: flex-start;
+  }
+
+  .S1-hero-title-stack {
+    min-height: 2.4em;
+  }
+
+  .S1-hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .S1-btn {
+    width: 100%;
+  }
+
+  .S1-meta-divider {
+    display: none;
+  }
+
+  .S1-hero-meta {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 16px;
+  }
+}
+
+/* Mobile: static background only (the JS does not load the waves here) */
+@media screen and (max-width: 640px) {
+  .S1-static-bg svg {
+    height: 48%;
+  }
+
+  /* hide the live canvas layer if it ever exists on a narrow screen */
+  .S1-hero-shader {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .S1-hero-badge-wrap {
+    gap: 8px;
+  }
+
+  .S1-hero-subtitle {
+    margin-top: 20px;
+  }
+
+  .S1-hero-meta {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Accessibility: user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .S1-btn {
+    transition: none;
+  }
+
+  .S1-btn:hover {
+    transform: none;
+  }
+
+  .S1-hero-shader {
+    transition: none;
+  }
+}
