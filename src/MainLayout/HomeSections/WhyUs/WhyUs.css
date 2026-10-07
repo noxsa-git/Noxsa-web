@@ -1,0 +1,329 @@
+/* ===== Why Us Section ===== */
+.S5-why {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 0;
+  background-color: #0a0a0a;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Top and bottom edge masks so the dot field dissolves smoothly */
+.S5-why-bg-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 18%,
+    black 82%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 18%,
+    black 82%,
+    transparent 100%
+  );
+}
+
+/* Dark shield on the left so text is 100% crisp over the dots */
+.S5-why-dark-shield {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 58%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse 90% 75% at 15% 50%,
+    #0a0a0a 0%,
+    rgba(10, 10, 10, 0.96) 55%,
+    rgba(10, 10, 10, 0.65) 80%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Content wrapper: 1536px max, 10px gutters */
+.S5-why-inner {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* Split layout: heading on the left, cards on the right */
+.S5-why-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1.5fr;
+  align-items: center;
+  gap: 60px;
+}
+
+/* ===== Left column ===== */
+.S5-why-heading-col {
+  max-width: 560px;
+}
+
+.S5-why-heading-content {
+  will-change: transform, opacity;
+}
+
+.S5-why-eyebrow {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent, #c6f135);
+}
+
+.S5-why-eyebrow span {
+  color: var(--muted, rgba(245, 247, 250, 0.65));
+}
+
+.S5-why-heading {
+  margin: 16px 0 0;
+  font-size: clamp(36px, 4.2vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+.S5-why-sub {
+  margin: 20px 0 0;
+  max-width: 490px;
+  font-size: 17px;
+  line-height: 1.65;
+  color: rgba(245, 247, 250, 0.85);
+}
+
+/* Trust pill */
+.S5-why-assurance {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 32px;
+  padding: 9px 20px;
+  border-radius: 999px;
+  background: #111411;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: rgba(245, 247, 250, 0.95);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.S5-shield-icon {
+  color: var(--accent, #c6f135);
+  flex-shrink: 0;
+}
+
+/* ===== Right column: 2x2 card grid ===== */
+.S5-why-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.S5-why-item-wrap {
+  height: 100%;
+}
+
+.S5-why-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 220px;
+  padding: 26px;
+  border-radius: 18px;
+  background: #111411;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.85);
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+  box-sizing: border-box;
+}
+
+/* Card header */
+.S5-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.S5-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  background: rgba(198, 241, 53, 0.12);
+  border: 1px solid rgba(198, 241, 53, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.S5-icon {
+  color: var(--accent, #c6f135);
+}
+
+.S5-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.S5-card-tag {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(245, 247, 250, 0.6);
+}
+
+.S5-card-num {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--accent, #c6f135);
+}
+
+/* Card body */
+.S5-card-content {
+  margin-top: 18px;
+}
+
+.S5-card-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+.S5-card-desc {
+  margin: 8px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(245, 247, 250, 0.75);
+}
+
+/* Hover: only on devices with a real pointer */
+@media (hover: hover) {
+  .S5-why-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(198, 241, 53, 0.38);
+    box-shadow:
+      0 20px 45px -12px rgba(0, 0, 0, 0.95),
+      0 0 20px -6px rgba(198, 241, 53, 0.25);
+  }
+
+  .S5-why-card:hover .S5-icon-box {
+    background: rgba(198, 241, 53, 0.2);
+    transform: scale(1.05);
+  }
+}
+
+/* ===== Responsive__ */
+
+/* Laptops */
+@media screen and (max-width: 1200px) {
+  .S5-why-grid {
+    gap: 36px;
+  }
+
+  .S5-why-card {
+    min-height: 200px;
+    padding: 22px 20px;
+  }
+}
+
+/* Tablets: stack columns, let height grow with content */
+@media screen and (max-width: 1024px) {
+  .S5-why {
+    min-height: 100vh;
+    padding: 96px 0;
+  }
+
+  .S5-why-dark-shield {
+    width: 100%;
+    height: 380px;
+  }
+
+  .S5-why-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .S5-why-heading-col {
+    max-width: 100%;
+  }
+
+  .S5-why-heading {
+    font-size: 38px;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 640px) {
+  .S5-why {
+    padding: 72px 0;
+  }
+
+  .S5-why-heading {
+    font-size: 30px;
+  }
+
+  .S5-why-sub {
+    font-size: 15.5px;
+  }
+
+  .S5-why-list {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .S5-why-card {
+    min-height: auto;
+    padding: 22px 20px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .S5-why-heading-content {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .S5-why-card {
+    transition: none;
+  }
+
+  .S5-why-card:hover {
+    transform: none;
+  }
+}

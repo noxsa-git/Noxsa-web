@@ -1,0 +1,31 @@
+.dot-field-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.dot-field-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Cursor glow: a plain div with a radial gradient.
+   It is moved with transform + opacity only, so it runs on the GPU
+   compositor (the old SVG circle was repainted on every frame). */
+.dot-field-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transform: translate3d(-9999px, -9999px, 0);
+  will-change: transform, opacity;
+}
