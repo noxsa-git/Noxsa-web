@@ -9,7 +9,7 @@ import {
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRightIcon, Sparkles } from "lucide-react";
 import { Helmet } from "react-helmet-async";
-import "./Home.css";
+import "./Hero.css";
 
 // Heavy WebGL code — loaded only on desktop, after the browser is idle__
 const GradientWaves = lazy(
@@ -346,8 +346,8 @@ function S1Hero() {
   );
 }
 
-// ===== Home Page =====
-export default function Home() {
+// ===== Hero Section =====
+export default function Hero() {
   return (
     <>
       <Helmet>

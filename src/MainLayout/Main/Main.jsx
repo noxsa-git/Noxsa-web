@@ -1,15 +1,17 @@
 // Components__
-import Home from "../Pages/Home/Home";
+import Hero from "../HomeSections/Hero/Hero";
 import Footer from "../../Components/Footer/Footer";
 import Tools from "../../Components/Tools/Tools";
-import Services from "../Pages/Services/Services";
+import Services from "../HomeSections/Services/Services";
+import Process from "../HomeSections/Process/Process";
 
 const Main = () => {
   return (
     <div>
-      <Home></Home>
+      <Hero></Hero>
       <Tools></Tools>
       <Services></Services>
+      <Process></Process>
       <Footer></Footer>
     </div>
   );
