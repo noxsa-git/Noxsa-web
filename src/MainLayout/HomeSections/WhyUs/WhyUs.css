@@ -1,41 +1,79 @@
 /* ===== Why Us Section ===== */
 .S5-why {
+  --S5-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --S5-stagger: 0.08s;
+
   position: relative;
   width: 100%;
+  /* min-height instead of a fixed 100vh: on short screens the content can
+     grow and is never cut off by overflow: hidden */
   min-height: 100vh;
   min-height: 100svh;
+  padding: 72px 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px 0;
   background-color: #0a0a0a;
   overflow: hidden;
   box-sizing: border-box;
 }
 
-/* Top and bottom edge masks so the dot field dissolves smoothly */
+/* ===== Background dots ===== */
 .S5-why-bg-wrap {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 18%,
-    black 82%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    black 18%,
-    black 82%,
-    transparent 100%
-  );
 }
 
-/* Dark shield on the left so text is 100% crisp over the dots */
+/* Soft top and bottom fade. Two plain gradient overlays replace the old
+   mask-image: a mask on a layer that contains an animated canvas forces the
+   browser to re-apply the mask on every frame. The background is a solid
+   color, so the look is the same. */
+.S5-why-bg-wrap::before,
+.S5-why-bg-wrap::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 18%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.S5-why-bg-wrap::before {
+  top: 0;
+  background: linear-gradient(to bottom, #0a0a0a 0%, rgba(10, 10, 10, 0) 100%);
+}
+
+.S5-why-bg-wrap::after {
+  bottom: 0;
+  background: linear-gradient(to top, #0a0a0a 0%, rgba(10, 10, 10, 0) 100%);
+}
+
+/* Static dot grid: pure CSS, drawn once, no JavaScript.
+   17.5px = dotRadius (1.5) + dotSpacing (16), same grid as the canvas. */
+.S5-why-dots-static {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom right,
+    rgba(198, 241, 53, 0.55),
+    rgba(226, 255, 115, 0.25)
+  );
+  -webkit-mask-image: radial-gradient(
+    circle at center,
+    #000 0.75px,
+    transparent 1.3px
+  );
+  mask-image: radial-gradient(circle at center, #000 0.75px, transparent 1.3px);
+  -webkit-mask-size: 17.5px 17.5px;
+  mask-size: 17.5px 17.5px;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+/* Left-side dark shield for crisp readability */
 .S5-why-dark-shield {
   position: absolute;
   top: 0;
@@ -53,7 +91,7 @@
   z-index: 2;
 }
 
-/* Content wrapper: 1536px max, 10px gutters */
+/* Strictly constrained inner container: max-width 1536px, 10px padding */
 .S5-why-inner {
   position: relative;
   z-index: 3;
@@ -64,7 +102,7 @@
   box-sizing: border-box;
 }
 
-/* Split layout: heading on the left, cards on the right */
+/* Split-screen layout */
 .S5-why-grid {
   display: grid;
   grid-template-columns: 1.05fr 1.5fr;
@@ -72,20 +110,16 @@
   gap: 60px;
 }
 
-/* ===== Left column ===== */
+/* Left narrative column */
 .S5-why-heading-col {
   max-width: 560px;
 }
 
-.S5-why-heading-content {
-  will-change: transform, opacity;
-}
-
 .S5-why-eyebrow {
   margin: 0;
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent, #c6f135);
 }
@@ -95,21 +129,21 @@
 }
 
 .S5-why-heading {
-  margin: 16px 0 0;
-  font-size: clamp(36px, 4.2vw, 52px);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
+  margin: 18px 0 0;
+  font-size: clamp(42px, 4.8vw, 64px);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
   color: #ffffff;
   -webkit-font-smoothing: antialiased;
 }
 
 .S5-why-sub {
-  margin: 20px 0 0;
-  max-width: 490px;
-  font-size: 17px;
+  margin: 22px 0 0;
+  font-size: clamp(17px, 1.25vw, 19.5px);
   line-height: 1.65;
   color: rgba(245, 247, 250, 0.85);
+  max-width: 490px;
 }
 
 /* Trust pill */
@@ -117,7 +151,7 @@
   display: inline-flex;
   align-items: center;
   gap: 11px;
-  margin-top: 32px;
+  margin-top: 36px;
   padding: 9px 20px;
   border-radius: 999px;
   background: #111411;
@@ -133,7 +167,12 @@
   flex-shrink: 0;
 }
 
-/* ===== Right column: 2x2 card grid ===== */
+/* Right column: 2x2 grid */
+.S5-why-cards-col {
+  position: relative;
+  width: 100%;
+}
+
 .S5-why-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -143,18 +182,14 @@
   list-style: none;
 }
 
-.S5-why-item-wrap {
-  height: 100%;
-}
-
+/* Solid obsidian card (the <li> itself) */
 .S5-why-card {
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
   min-height: 220px;
-  padding: 26px;
+  padding: 26px 26px;
   border-radius: 18px;
   background: #111411;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -218,20 +253,20 @@
 
 .S5-card-title {
   margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
   color: #ffffff;
 }
 
 .S5-card-desc {
   margin: 8px 0 0;
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 14.5px;
+  line-height: 1.58;
   color: rgba(245, 247, 250, 0.75);
 }
 
-/* Hover: only on devices with a real pointer */
+/* Hover interaction (only on devices with real hover) */
 @media (hover: hover) {
   .S5-why-card:hover {
     transform: translateY(-3px);
@@ -247,7 +282,41 @@
   }
 }
 
-/* ===== Responsive__ */
+/* ===== Scroll reveal (CSS only, compositor friendly) =====
+   Only for users without reduced-motion. "backwards" fill: the first keyframe
+   is used during the delay, then the element returns to its normal style, so
+   the hover styles still work. */
+@media (prefers-reduced-motion: no-preference) {
+  .S5-why [data-reveal]:not(.is-revealed) {
+    opacity: 0;
+  }
+
+  .S5-why-heading-content.is-revealed {
+    animation: S5-descend 0.6s var(--S5-ease) backwards;
+  }
+
+  .S5-why-card.is-revealed {
+    animation: S5-rise 0.45s var(--S5-ease)
+      calc(var(--i, 0) * var(--S5-stagger)) backwards;
+  }
+}
+
+/* The title glides down into place, like the old scroll effect */
+@keyframes S5-descend {
+  from {
+    opacity: 0;
+    transform: translateY(-48px);
+  }
+}
+
+@keyframes S5-rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+/* ===== Responsive Layouts ===== */
 
 /* Laptops */
 @media screen and (max-width: 1200px) {
@@ -261,10 +330,9 @@
   }
 }
 
-/* Tablets: stack columns, let height grow with content */
+/* Tablets */
 @media screen and (max-width: 1024px) {
   .S5-why {
-    min-height: 100vh;
     padding: 96px 0;
   }
 
@@ -287,9 +355,10 @@
   }
 }
 
-/* Mobile */
+/* Mobile devices */
 @media screen and (max-width: 640px) {
   .S5-why {
+    --S5-stagger: 0s; /* each card reveals alone when it enters the screen */
     padding: 72px 0;
   }
 
@@ -312,14 +381,10 @@
   }
 }
 
-/* Reduced motion */
+/* Reduced motion mode */
 @media (prefers-reduced-motion: reduce) {
-  .S5-why-heading-content {
-    transform: none !important;
-    opacity: 1 !important;
-  }
-
-  .S5-why-card {
+  .S5-why-card,
+  .S5-icon-box {
     transition: none;
   }
 

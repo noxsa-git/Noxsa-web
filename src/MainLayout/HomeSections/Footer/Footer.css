@@ -1,0 +1,238 @@
+/* ===== Footer ===== */
+.S8-footer {
+  --S8-border: #ffffff14;
+  --S8-border-strong: #ffffff2e;
+  --S8-text: #f5f7fa;
+  --S8-text-muted: #f5f7faad;
+  --S8-text-dim: #f5f7fa80;
+
+  position: relative;
+  width: 100%;
+  padding: 80px 0 32px;
+  background: #070a07;
+  border-top: 1px solid #ffffff0f;
+}
+
+.S8-footer-inner {
+  width: 100%;
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* Top: brand + 3 columns */
+.S8-footer-top {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
+  gap: 48px;
+}
+
+/* Brand column */
+.S8-footer-logo {
+  display: inline-block;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--S8-text);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.S8-footer-logo:hover {
+  color: var(--accent, #c6f135);
+}
+
+.S8-footer-logo:focus-visible {
+  outline: 2px solid var(--accent, #c6f135);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.S8-footer-tagline {
+  margin: 12px 0 0;
+  max-width: 280px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--S8-text-muted);
+}
+
+/* Social icons */
+.S8-footer-socials {
+  display: flex;
+  gap: 8px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.S8-footer-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--S8-border);
+  background: #0f130f;
+  color: var(--S8-text-muted);
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.S8-footer-social:hover {
+  color: var(--accent, #c6f135);
+  border-color: var(--S8-border-strong);
+  background: #121612;
+  transform: translateY(-2px);
+}
+
+.S8-footer-social:focus-visible {
+  outline: 2px solid var(--accent, #c6f135);
+  outline-offset: 3px;
+}
+
+/* Link columns */
+.S8-footer-col-title {
+  margin: 0 0 16px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--S8-text-dim);
+}
+
+.S8-footer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.S8-footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--S8-text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.S8-footer-link:hover {
+  color: var(--accent, #c6f135);
+}
+
+.S8-footer-link:focus-visible {
+  outline: 2px solid var(--accent, #c6f135);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.S8-footer-link--icon svg {
+  flex-shrink: 0;
+  color: var(--S8-text-dim);
+  transition: color 0.15s ease;
+}
+
+.S8-footer-link--icon:hover svg {
+  color: var(--accent, #c6f135);
+}
+
+/* Bottom bar */
+.S8-footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 64px;
+  padding-top: 24px;
+  border-top: 1px solid var(--S8-border);
+}
+
+.S8-footer-copy,
+.S8-footer-credit {
+  margin: 0;
+  font-size: 13px;
+  color: var(--S8-text-dim);
+}
+
+/* ===== Responsive__ */
+
+@media screen and (max-width: 1024px) {
+  .S8-footer {
+    padding: 64px 0 28px;
+  }
+
+  .S8-footer-top {
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 40px;
+  }
+
+  /* "Get in touch" drops to a new row spanning everything */
+  .S8-footer-top > .S8-footer-col:last-child {
+    grid-column: 1 / -1;
+    padding-top: 32px;
+    border-top: 1px solid var(--S8-border);
+  }
+
+  .S8-footer-bottom {
+    margin-top: 48px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .S8-footer {
+    padding: 56px 0 24px;
+  }
+
+  .S8-footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .S8-footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  .S8-footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 40px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .S8-footer {
+    padding: 48px 0 20px;
+  }
+
+  .S8-footer-top {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .S8-footer-tagline {
+    max-width: 100%;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .S8-footer-logo,
+  .S8-footer-social,
+  .S8-footer-link,
+  .S8-footer-link--icon svg {
+    transition: none;
+  }
+
+  .S8-footer-social:hover {
+    transform: none;
+  }
+}
