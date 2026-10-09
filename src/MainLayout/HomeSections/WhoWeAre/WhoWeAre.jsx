@@ -2,16 +2,44 @@ import { useState } from "react";
 import { ArrowRightIcon } from "lucide-react";
 import "./WhoWeAre.css";
 
+// Team members shown in the section
+const teamMembers = [
+  {
+    name: "Sobur Hossen",
+    position: "Lead Developer",
+    role: "Senior Developer",
+    image:
+      "https://res.cloudinary.com/ysbpcq4w/image/upload/v1791558751/Sobur.png",
+  },
+  {
+    name: "Aminul Islam",
+    position: "Creative Lead",
+    role: "Content and Video Editor",
+    image:
+      "https://res.cloudinary.com/ysbpcq4w/image/upload/v1791558755/Amin.png",
+  },
+  {
+    name: "Marufur Rahman",
+    position: "Founding Member",
+    role: "Marketing Manager",
+    image:
+      "https://res.cloudinary.com/ysbpcq4w/image/upload/v1791558751/Fahim.png",
+  },
+];
+
 export default function WhoWeAre() {
   const [isOn, setIsOn] = useState(false);
+
+  const toggleLamp = () => setIsOn((v) => !v);
 
   return (
     <section className="S7-who-section" aria-label="Who We Are">
       <div className="S7-who-inner">
+        {/* Lamp + light beam */}
         <div className="S7-lamp-stage">
           <div
-            className={`S7-bell-container${!isOn ? " off" : ""}`}
-            onClick={() => setIsOn((v) => !v)}
+            className={`S7-bell-container ${!isOn ? "off" : ""}`}
+            onClick={toggleLamp}
             role="button"
             tabIndex={0}
             aria-label={isOn ? "Dim the lamp" : "Illuminate the lamp"}
@@ -19,10 +47,10 @@ export default function WhoWeAre() {
             onKeyDown={(e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
-                setIsOn((v) => !v);
+                toggleLamp();
               }
             }}>
-            {/* Single light beam — first child so the lamp paints over it */}
+            {/* Light beam — first child so the lamp paints over it */}
             <div className="S7-volumetric" />
 
             <div className="S7-rope" />
@@ -50,6 +78,7 @@ export default function WhoWeAre() {
           </div>
         </div>
 
+        {/* Brand stage: logo, title, description — lit by the beam */}
         <div className={`S7-brand-stage ${isOn ? "on" : "dimmed"}`}>
           <div className="S7-light-puddle" aria-hidden="true" />
 
@@ -76,16 +105,40 @@ export default function WhoWeAre() {
               single product we build has to be our best. Honest effort, clean
               execution, and real dedication.
             </p>
-            <a href="#contact" className="S7-story-cta">
-              <span>Work With Us</span>
-              <ArrowRightIcon size={15} aria-hidden="true" />
-            </a>
           </div>
+        </div>
 
+        {/* Team — the light ray ends exactly where this grid begins */}
+        <ul className={`S7-team-grid ${!isOn ? "dimmed" : ""}`} role="list">
+          {teamMembers.map((member) => (
+            <li key={member.name} className="S7-team-card">
+              <div className="S7-team-photo">
+                <img
+                  src={member.image}
+                  alt={`${member.name} — ${member.position}`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div className="S7-team-info">
+                <h3 className="S7-team-name">{member.name}</h3>
+                <p className="S7-team-position">{member.position}</p>
+                <p className="S7-team-role">{member.role}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        {/* Actions row */}
+        <div className="S7-actions">
+          <a href="#contact" className="S7-story-cta">
+            <span>Work with us</span>
+            <ArrowRightIcon size={15} aria-hidden="true" />
+          </a>
           <button
             type="button"
             className="S7-click-prompt"
-            onClick={() => setIsOn((v) => !v)}
+            onClick={toggleLamp}
             aria-label={isOn ? "Dim the lamp" : "Illuminate the lamp"}>
             <span className={`S7-prompt-indicator ${isOn ? "on" : "off"}`} />
             <span>

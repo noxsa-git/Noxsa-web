@@ -2,14 +2,7 @@
 .S7-who-section {
   position: relative;
   width: 100%;
-  height: auto;
-  min-height: auto;
-  padding-top: 50vh;
-  padding-bottom: 50vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  padding: 20vh 0 100px;
   background-color: #0a0a0a;
   overflow: hidden;
   box-sizing: border-box;
@@ -35,7 +28,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 4.8px;
+  font-size: 5px;
 
   --base-clr: #2e241b;
   --base-shadow: #150f0b;
@@ -420,7 +413,7 @@
     -5em 0.6em 3.5em -0.4em rgba(255, 220, 170, 0.26),
     5em 0.6em 3.5em -0.4em rgba(255, 220, 170, 0.26),
     inset 0 -2em 2em -2em #ffe9d4,
-    inset 0 -1em 2em 1em rgba(197, 241, 53, 0.438);
+    inset 0 -1em 2em 1em rgba(198, 241, 53, 0.15);
   filter: brightness(1.1);
 }
 
@@ -501,39 +494,55 @@
 }
 
 /* ===== Light beam =====
-   Fix for horizontal drift: the beam element is wider than the container,
-   so `margin: auto` cannot center it (browser falls back to left: 0 and the
-   element overflows right). We position it explicitly at 50% and translate
-   back by half its own width — this centers it for any width.
-
-   Apex sits at y = -25em (inside the bell base, so the tip is hidden).
-   Element height 200em → base at y = 175em from container center.
-   At bulb's bottom edge (y = 24em) the beam is ~54em wide, close to the
-   59em bulb, so the handoff reads smoothly.
-   Gradient fades to transparent at 85% so the base's width is never
-   visible — the beam visually ends well before the geometric base. */
+   Single straight triangular cone, shaped by a conic mask so the side
+   edges fade softly instead of ending on a hard clip-path line.
+   Apex sits at (50%, 0%) — same hidden point inside the bell-base.
+   The two angular bands (121–127deg, 233–239deg) soften the right and
+   left edges. Because the transition is angular, its physical width
+   grows with distance from the apex, matching how a real light cone's
+   penumbra widens as it travels. */
 .S7-volumetric {
-  width: 200em;
-  height: 200em;
+  width: 420em;
+  height: 140em;
 
-  /* Explicit centering — override the container's `left: 0; right: 0` */
+  /* Explicit centering — overrides the container's left: 0; right: 0 */
   left: 50%;
   right: auto;
   top: 0;
   bottom: auto;
   margin: 0;
 
-  /* X shift via translate; change this number to fine-tune left/right.
-     Y shift moves the whole beam up/down. */
-  transform: translate(-50%, 15em);
+  /* X moves beam left/right, Y moves it up/down */
+  transform: translate(-50%, 49em);
 
-  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  /* Soft-edged triangle via a conic mask.
+     transparent → black is a soft fade; black = fully visible. */
+  -webkit-mask-image: conic-gradient(
+    from 0deg at 50% 0%,
+    transparent 0deg,
+    transparent 121deg,
+    black 127deg,
+    black 233deg,
+    transparent 239deg,
+    transparent 360deg
+  );
+  mask-image: conic-gradient(
+    from 0deg at 50% 0%,
+    transparent 0deg,
+    transparent 121deg,
+    black 127deg,
+    black 233deg,
+    transparent 239deg,
+    transparent 360deg
+  );
+
   background: linear-gradient(
     to bottom,
-    rgba(255, 245, 220, 0.55) 0%,
-    rgba(255, 240, 210, 0.32) 25%,
-    rgba(255, 235, 200, 0.14) 55%,
-    transparent 85%
+    #fff5dc8c 0%,
+    #fff0d252 20%,
+    #ffebc826 45%,
+    #ffebc80d 65%,
+    transparent 76%
   );
   filter: blur(1.4em);
   pointer-events: none;
@@ -573,15 +582,15 @@
 
 .S7-light-puddle {
   position: absolute;
-  top: -30px;
+  top: -20px;
   left: 50%;
   transform: translateX(-50%);
-  width: 130%;
-  height: 320px;
+  width: 110%;
+  height: 520px;
   background: radial-gradient(
     ellipse 65% 55% at 50% 30%,
-    #fff5d718 0%,
-    #c5f1350a 45%,
+    rgba(255, 245, 215, 0.14) 0%,
+    rgba(198, 241, 53, 0.08) 45%,
     transparent 75%
   );
   pointer-events: none;
@@ -597,7 +606,6 @@
   position: relative;
   z-index: 2;
   width: clamp(280px, 34vw, 460px);
-  margin-bottom: 20px;
 }
 
 .S7-brand-logo {
@@ -605,7 +613,7 @@
   height: auto;
   display: block;
   object-fit: contain;
-  filter: drop-shadow(0 0 20px rgba(197, 241, 53, 0.54));
+  filter: drop-shadow(0 0 20px rgba(198, 241, 53, 0.3));
 }
 
 .S7-story-card {
@@ -646,11 +654,121 @@
   max-width: 580px;
 }
 
+/* ===== Team grid ===== */
+.S7-team-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+  margin: 64px 0 0;
+  padding: 0;
+  list-style: none;
+
+  /* Fully lit when the lamp is on */
+  opacity: 1;
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Dim when the lamp is off, matching the brand stage */
+.S7-team-grid.dimmed {
+  opacity: 0.12;
+}
+
+.S7-team-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 16px;
+  background: #0f130f;
+  border: 1px solid #ffffff14;
+  box-shadow: 0 12px 28px -16px #000000bf;
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease;
+}
+
+.S7-team-photo {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0d100d;
+  border: 1px solid #ffffff0f;
+}
+
+.S7-team-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.S7-team-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 4px 8px;
+}
+
+.S7-team-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+
+.S7-team-position {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent, #c6f135);
+}
+
+.S7-team-role {
+  margin: 2px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(245, 247, 250, 0.7);
+}
+
+@media (hover: hover) {
+  .S7-team-card:hover {
+    border-color: #ffffff2e;
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px -18px #000000d9;
+  }
+
+  .S7-team-card:hover .S7-team-photo img {
+    transform: scale(1.04);
+  }
+}
+
+/* ===== Actions row ===== */
+.S7-actions {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 20px 32px;
+  width: 100%;
+  margin-top: 56px;
+}
+
 .S7-story-cta {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 24px;
   padding: 12px 28px;
   border-radius: 999px;
   background: var(--accent, #c6f135);
@@ -671,14 +789,15 @@
   box-shadow: 0 0 32px 0 rgba(198, 241, 53, 0.6);
 }
 
-/* ===== Click prompt ===== */
+.S7-story-cta:focus-visible {
+  outline: 2px solid var(--accent, #c6f135);
+  outline-offset: 4px;
+}
+
 .S7-click-prompt {
-  position: relative;
-  z-index: 2;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 36px;
   padding: 0;
   background: none;
   border: 0;
@@ -714,10 +833,17 @@
 }
 
 /* ===== Responsive__ */
+@media screen and (max-width: 1024px) {
+  .S7-team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 56px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .S7-who-section {
-    padding-top: 35vh;
-    padding-bottom: 35vh;
+    padding: 15vh 0 80px;
   }
 
   .S7-lamp-stage {
@@ -736,6 +862,30 @@
   .S7-brand-stage {
     margin-top: 0;
   }
+
+  .S7-team-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .S7-team-card {
+    flex-direction: row;
+    gap: 16px;
+    padding: 16px;
+    align-items: center;
+  }
+
+  .S7-team-photo {
+    width: 96px;
+    height: 96px;
+    flex-shrink: 0;
+  }
+
+  .S7-team-info {
+    padding: 0;
+    flex: 1;
+  }
 }
 
 /* Reduced motion */
@@ -746,5 +896,18 @@
 
   .S7-bell-rays::before {
     animation: none;
+  }
+
+  .S7-team-card,
+  .S7-team-photo img {
+    transition: none;
+  }
+
+  .S7-team-card:hover {
+    transform: none;
+  }
+
+  .S7-team-card:hover .S7-team-photo img {
+    transform: none;
   }
 }
