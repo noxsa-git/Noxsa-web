@@ -1,4 +1,3 @@
-/* ===== Who We Are Section ===== */
 .S7-who-section {
   position: relative;
   width: 100%;
@@ -20,7 +19,6 @@
   box-sizing: border-box;
 }
 
-/* ===== Lamp stage ===== */
 .S7-lamp-stage {
   position: relative;
   width: 100%;
@@ -29,7 +27,6 @@
   justify-content: center;
   align-items: center;
   font-size: 5px;
-
   --base-clr: #2e241b;
   --base-shadow: #150f0b;
   --bell-warm: rgba(230, 180, 120, 0.32);
@@ -40,7 +37,6 @@
   --degofrot: 0.75;
 }
 
-/* ===== Bell container ===== */
 .S7-bell-container {
   position: absolute;
   top: 0;
@@ -77,7 +73,6 @@
     box-shadow 0.4s ease;
 }
 
-/* ===== Rope ===== */
 .S7-rope {
   height: 80vh;
   width: 1.6em;
@@ -88,7 +83,6 @@
   border-left: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* ===== Bell top cap ===== */
 .S7-bell-top {
   width: 14%;
   height: 14%;
@@ -101,14 +95,13 @@
     0 -0.1em 0.5em 0.3em rgba(198, 241, 53, 0.18);
 }
 
-/* ===== Bell body ===== */
 .S7-bell-base {
   width: 50%;
   height: 50%;
   border-radius: 50%;
   transform: translateY(-24%);
   background: var(--base-clr);
-  box-shadow: 0 -0.15em 0.5em 0.25em rgba(230, 201, 160, 0.18);
+  box-shadow: 0 -0.15em 0.5em 0.25em #e6c9a02e;
 }
 
 .S7-bell-base::before {
@@ -143,7 +136,6 @@
   transform: scale(0.74, 0.84) translateY(-11em);
 }
 
-/* ===== Shadows ===== */
 .S7-shadow-l1 {
   width: 30em;
   height: 42em;
@@ -170,7 +162,6 @@
   background: #000000;
 }
 
-/* ===== Interior glow ===== */
 .S7-left-glow {
   width: 50%;
   height: 50%;
@@ -215,7 +206,6 @@
   clip-path: polygon(0 0, 100% 0, 100% 78%, 0 78%);
 }
 
-/* ===== Mid rings ===== */
 .S7-mid-ring {
   width: 64%;
   height: 10%;
@@ -232,7 +222,6 @@
   transform: translate(0.04em, -8em) scale(0.8, 0.5);
 }
 
-/* ===== Interior light bounce ===== */
 .S7-glow {
   width: 100%;
   height: 100%;
@@ -369,7 +358,6 @@
   );
 }
 
-/* ===== Bell curves ===== */
 .S7-bell-buff-t {
   width: 72%;
   height: 12%;
@@ -398,7 +386,6 @@
   background: linear-gradient(90deg, #0b0907 40%, var(--base-clr) 90%);
 }
 
-/* ===== Bulb core ===== */
 .S7-bell-btm2 {
   width: 74%;
   height: 12%;
@@ -423,7 +410,6 @@
   filter: brightness(0.4);
 }
 
-/* ===== Inner ring ===== */
 .S7-bell-ring-container {
   width: 74%;
   height: 24%;
@@ -450,7 +436,6 @@
   box-shadow: none;
 }
 
-/* ===== Radial rays ===== */
 .S7-bell-rays {
   width: 100%;
   height: 140%;
@@ -493,30 +478,15 @@
   }
 }
 
-/* ===== Light beam =====
-   Single straight triangular cone, shaped by a conic mask so the side
-   edges fade softly instead of ending on a hard clip-path line.
-   Apex sits at (50%, 0%) — same hidden point inside the bell-base.
-   The two angular bands (121–127deg, 233–239deg) soften the right and
-   left edges. Because the transition is angular, its physical width
-   grows with distance from the apex, matching how a real light cone's
-   penumbra widens as it travels. */
 .S7-volumetric {
   width: 420em;
   height: 140em;
-
-  /* Explicit centering — overrides the container's left: 0; right: 0 */
   left: 50%;
   right: auto;
   top: 0;
   bottom: auto;
   margin: 0;
-
-  /* X moves beam left/right, Y moves it up/down */
   transform: translate(-50%, 49em);
-
-  /* Soft-edged triangle via a conic mask.
-     transparent → black is a soft fade; black = fully visible. */
   -webkit-mask-image: conic-gradient(
     from 0deg at 50% 0%,
     transparent 0deg,
@@ -535,7 +505,6 @@
     transparent 239deg,
     transparent 360deg
   );
-
   background: linear-gradient(
     to bottom,
     #fff5dc8c 0%,
@@ -554,7 +523,6 @@
   opacity: 0;
 }
 
-/* ===== Brand stage ===== */
 .S7-brand-stage {
   position: relative;
   display: flex;
@@ -654,7 +622,6 @@
   max-width: 580px;
 }
 
-/* ===== Team grid ===== */
 .S7-team-grid {
   position: relative;
   z-index: 2;
@@ -665,94 +632,138 @@
   margin: 64px 0 0;
   padding: 0;
   list-style: none;
-
-  /* Fully lit when the lamp is on */
   opacity: 1;
+  perspective: 1200px;
   transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Dim when the lamp is off, matching the brand stage */
 .S7-team-grid.dimmed {
   opacity: 0.12;
 }
 
+.S7-team-card-wrapper {
+  perspective: 1000px;
+  height: 100%;
+}
+
 .S7-team-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 20px;
-  border-radius: 16px;
-  background: #0f130f;
-  border: 1px solid #ffffff14;
-  box-shadow: 0 12px 28px -16px #000000bf;
+  height: 100%;
+  padding: 16px;
+  border-radius: 20px;
+  background: #111411;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.8);
+  transform-style: preserve-3d;
+  will-change: transform;
+  cursor: pointer;
   transition:
     border-color 0.25s ease,
-    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.25s ease;
+  box-sizing: border-box;
+}
+
+.S7-team-card:hover {
+  border-color: rgba(198, 241, 53, 0.35);
+  box-shadow:
+    0 24px 50px -12px rgba(0, 0, 0, 0.95),
+    0 0 24px -4px rgba(198, 241, 53, 0.2);
 }
 
 .S7-team-photo {
   position: relative;
-  aspect-ratio: 1 / 1;
-  border-radius: 12px;
+  aspect-ratio: 4 / 4;
+  width: 100%;
+  border-radius: 14px;
   overflow: hidden;
   background: #0d100d;
-  border: 1px solid #ffffff0f;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transform: translateZ(0);
 }
 
 .S7-team-photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top center;
+  object-position: center;
   display: block;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.S7-team-card:hover .S7-team-photo img {
+  transform: scale(1.05);
+}
+
+.S7-team-photo-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(17, 20, 17, 0.9) 0%,
+    rgba(17, 20, 17, 0.2) 35%,
+    transparent 60%
+  );
+  pointer-events: none;
 }
 
 .S7-team-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 4px 4px 8px;
+  padding: 18px 8px 10px;
+  transform: translateZ(28px);
+  transform-style: preserve-3d;
 }
 
-.S7-team-name {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: #ffffff;
+.S7-team-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(198, 241, 53, 0.08);
+  border: 1px solid rgba(198, 241, 53, 0.25);
+  margin-bottom: 10px;
+}
+
+.S7-team-badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent, #c6f135);
+  box-shadow: 0 0 6px var(--accent, #c6f135);
 }
 
 .S7-team-position {
-  margin: 4px 0 0;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent, #c6f135);
 }
 
+.S7-team-name {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  transition: color 0.2s ease;
+}
+
+.S7-team-card:hover .S7-team-name {
+  color: #ffffff;
+}
+
 .S7-team-role {
-  margin: 2px 0 0;
+  margin: 6px 0 0;
   font-size: 14px;
   line-height: 1.5;
-  color: rgba(245, 247, 250, 0.7);
+  color: rgba(245, 247, 250, 0.72);
 }
 
-@media (hover: hover) {
-  .S7-team-card:hover {
-    border-color: #ffffff2e;
-    transform: translateY(-3px);
-    box-shadow: 0 20px 40px -18px #000000d9;
-  }
-
-  .S7-team-card:hover .S7-team-photo img {
-    transform: scale(1.04);
-  }
-}
-
-/* ===== Actions row ===== */
 .S7-actions {
   position: relative;
   z-index: 2;
@@ -832,7 +843,6 @@
   box-shadow: 0 0 8px var(--accent, #c6f135);
 }
 
-/* ===== Responsive__ */
 @media screen and (max-width: 1024px) {
   .S7-team-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -845,69 +855,38 @@
   .S7-who-section {
     padding: 15vh 0 80px;
   }
-
   .S7-lamp-stage {
     height: 240px;
     font-size: 3.8px;
   }
-
   .S7-story-title {
     font-size: 26px;
   }
-
   .S7-story-text {
     font-size: 14px;
   }
-
   .S7-brand-stage {
     margin-top: 0;
   }
-
   .S7-team-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 18px;
     margin-top: 48px;
-  }
-
-  .S7-team-card {
-    flex-direction: row;
-    gap: 16px;
-    padding: 16px;
-    align-items: center;
-  }
-
-  .S7-team-photo {
-    width: 96px;
-    height: 96px;
-    flex-shrink: 0;
-  }
-
-  .S7-team-info {
-    padding: 0;
-    flex: 1;
   }
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .S7-bell-container {
     animation: none;
   }
-
   .S7-bell-rays::before {
     animation: none;
   }
-
-  .S7-team-card,
+  .S7-team-card {
+    transition: none;
+    transform: none !important;
+  }
   .S7-team-photo img {
     transition: none;
-  }
-
-  .S7-team-card:hover {
-    transform: none;
-  }
-
-  .S7-team-card:hover .S7-team-photo img {
-    transform: none;
   }
 }

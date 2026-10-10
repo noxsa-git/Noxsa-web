@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { ArrowRightIcon } from "lucide-react";
 import "./WhoWeAre.css";
 
-// Team members shown in the section
 const teamMembers = [
   {
     name: "Sobur Hossen",
@@ -27,15 +27,82 @@ const teamMembers = [
   },
 ];
 
+function TeamCard({ member }) {
+  const cardRef = useRef(null);
+  const rotateX = useSpring(useMotionValue(0), {
+    damping: 25,
+    stiffness: 140,
+    mass: 1,
+  });
+  const rotateY = useSpring(useMotionValue(0), {
+    damping: 25,
+    stiffness: 140,
+    mass: 1,
+  });
+  const scale = useSpring(1, { damping: 25, stiffness: 140, mass: 1 });
+
+  function handleMouseMove(e) {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left - rect.width / 2;
+    const offsetY = e.clientY - rect.top - rect.height / 2;
+    rotateX.set((offsetY / (rect.height / 2)) * -12);
+    rotateY.set((offsetX / (rect.width / 2)) * 12);
+  }
+
+  function handleMouseEnter() {
+    scale.set(1.03);
+  }
+
+  function handleMouseLeave() {
+    scale.set(1);
+    rotateX.set(0);
+    rotateY.set(0);
+  }
+
+  return (
+    <li className="S7-team-card-wrapper">
+      <motion.div
+        ref={cardRef}
+        className="S7-team-card"
+        onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          rotateX,
+          rotateY,
+          scale,
+        }}>
+        <div className="S7-team-photo">
+          <img
+            src={member.image}
+            alt={`${member.name} — ${member.position}`}
+            loading="lazy"
+            decoding="async"
+          />
+          <div className="S7-team-photo-gradient" />
+        </div>
+
+        <div className="S7-team-info">
+          <div className="S7-team-badge">
+            <span className="S7-team-badge-dot" />
+            <span className="S7-team-position">{member.position}</span>
+          </div>
+          <h3 className="S7-team-name">{member.name}</h3>
+          <p className="S7-team-role">{member.role}</p>
+        </div>
+      </motion.div>
+    </li>
+  );
+}
+
 export default function WhoWeAre() {
   const [isOn, setIsOn] = useState(false);
-
   const toggleLamp = () => setIsOn((v) => !v);
 
   return (
-    <section className="S7-who-section" aria-label="Who We Are">
+    <section className="S7-who-section" aria-label="WhoWeAre">
       <div className="S7-who-inner">
-        {/* Lamp + light beam */}
         <div className="S7-lamp-stage">
           <div
             className={`S7-bell-container ${!isOn ? "off" : ""}`}
@@ -50,9 +117,7 @@ export default function WhoWeAre() {
                 toggleLamp();
               }
             }}>
-            {/* Light beam — first child so the lamp paints over it */}
             <div className="S7-volumetric" />
-
             <div className="S7-rope" />
             <div className="S7-bell-top" />
             <div className="S7-bell-base" />
@@ -78,10 +143,8 @@ export default function WhoWeAre() {
           </div>
         </div>
 
-        {/* Brand stage: logo, title, description — lit by the beam */}
         <div className={`S7-brand-stage ${isOn ? "on" : "dimmed"}`}>
           <div className="S7-light-puddle" aria-hidden="true" />
-
           <div className="S7-logo-wrapper">
             <img
               src="https://res.cloudinary.com/ysbpcq4w/image/upload/v1791465225/remove-BG-Noxsa.png"
@@ -90,10 +153,9 @@ export default function WhoWeAre() {
               loading="lazy"
             />
           </div>
-
           <div className="S7-story-card">
             <p className="S7-story-eyebrow">
-              05 <span>/ Who we are</span>
+              05<span>/ Whoweare</span>
             </p>
             <h2 className="S7-story-title">
               A small team with everything to prove.
@@ -108,28 +170,12 @@ export default function WhoWeAre() {
           </div>
         </div>
 
-        {/* Team — the light ray ends exactly where this grid begins */}
         <ul className={`S7-team-grid ${!isOn ? "dimmed" : ""}`} role="list">
           {teamMembers.map((member) => (
-            <li key={member.name} className="S7-team-card">
-              <div className="S7-team-photo">
-                <img
-                  src={member.image}
-                  alt={`${member.name} — ${member.position}`}
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-              <div className="S7-team-info">
-                <h3 className="S7-team-name">{member.name}</h3>
-                <p className="S7-team-position">{member.position}</p>
-                <p className="S7-team-role">{member.role}</p>
-              </div>
-            </li>
+            <TeamCard key={member.name} member={member} />
           ))}
         </ul>
 
-        {/* Actions row */}
         <div className="S7-actions">
           <a href="#contact" className="S7-story-cta">
             <span>Work with us</span>
