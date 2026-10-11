@@ -12,7 +12,6 @@ import "./WhyUs.css";
 // Phones never load it.
 const DotField = lazy(() => import("../../../Components/DotField/DotField"));
 
-// 4 core value pillars
 const reasons = [
   {
     num: "01",
@@ -48,14 +47,12 @@ const reasons = [
   },
 ];
 
-/* ---------- when is the interactive canvas allowed? ---------- */
-
 const FINE_POINTER_QUERY = "(hover: hover) and (pointer: fine)";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
+// Phones and tablets have no cursor, so the interactive effect would never run.
 function canUseInteractiveDots() {
   if (typeof window === "undefined") return false;
-  // Phones and tablets have no mouse, so the cursor effect could never run
   if (!window.matchMedia(FINE_POINTER_QUERY).matches) return false;
   if (window.matchMedia(REDUCED_MOTION_QUERY).matches) return false;
 
@@ -81,8 +78,8 @@ function useInteractiveDots() {
   return enabled;
 }
 
-/* ---------- scroll reveal: one observer, CSS animation ---------- */
-
+// Adds "is-revealed" to [data-reveal] targets when they cross the fold, then
+// stops watching them.
 function useRevealOnScroll(rootRef) {
   useEffect(() => {
     const root = rootRef.current;
@@ -98,11 +95,11 @@ function useRevealOnScroll(rootRef) {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
           entry.target.classList.add("is-revealed");
           observer.unobserve(entry.target);
-        });
+        }
       },
       { rootMargin: "0px 0px -40px 0px" },
     );
@@ -112,8 +109,7 @@ function useRevealOnScroll(rootRef) {
   }, [rootRef]);
 }
 
-/* Static dot grid made with pure CSS (no JS, no canvas, no animation).
-   Used on phones/tablets and as the loading picture on desktop. */
+// Fallback picture for the dot grid on phones / tablets / reduced motion.
 function StaticDots() {
   return <div className="S5-why-dots-static" />;
 }
@@ -129,7 +125,6 @@ export default function WhyUs() {
       ref={sectionRef}
       aria-labelledby="why-title"
       className="S5-why">
-      {/* Background dots with soft top/bottom fade */}
       <div className="S5-why-bg-wrap" aria-hidden="true">
         {interactiveDots ? (
           <Suspense fallback={<StaticDots />}>
@@ -149,12 +144,10 @@ export default function WhyUs() {
         )}
       </div>
 
-      {/* Dark backdrop behind text for crisp readability */}
       <div className="S5-why-dark-shield" aria-hidden="true" />
 
       <div className="S5-why-inner">
         <div className="S5-why-grid">
-          {/* Left column: heading */}
           <div className="S5-why-heading-col">
             <div className="S5-why-heading-content" data-reveal>
               <p className="S5-why-eyebrow">
@@ -171,7 +164,6 @@ export default function WhyUs() {
                 engineering, and verifiable results.
               </p>
 
-              {/* Trust badge */}
               <div className="S5-why-assurance">
                 <ShieldCheckIcon
                   size={18}
@@ -183,7 +175,6 @@ export default function WhyUs() {
             </div>
           </div>
 
-          {/* Right column: 2x2 cards. The <li> is the card itself. */}
           <div className="S5-why-cards-col">
             <ul className="S5-why-list" role="list">
               {reasons.map(
@@ -193,11 +184,10 @@ export default function WhyUs() {
                     className="S5-why-card"
                     data-reveal
                     style={{ "--i": i }}>
-                    {/* Card header */}
                     <div className="S5-card-header">
                       <div className="S5-icon-box">
                         <Icon
-                          size={20}
+                          size={22}
                           strokeWidth={1.8}
                           className="S5-icon"
                           aria-hidden="true"
@@ -211,7 +201,6 @@ export default function WhyUs() {
                       </div>
                     </div>
 
-                    {/* Card body */}
                     <div className="S5-card-content">
                       <h3 className="S5-card-title">{title}</h3>
                       <p className="S5-card-desc">{description}</p>

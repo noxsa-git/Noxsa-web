@@ -5,11 +5,9 @@
 
   position: relative;
   width: 100%;
-  /* min-height instead of a fixed 100vh: on short screens the content can
-     grow and is never cut off by overflow: hidden */
   min-height: 100vh;
   min-height: 100svh;
-  padding: 72px 0;
+  padding: 100px 0 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,10 +24,9 @@
   z-index: 1;
 }
 
-/* Soft top and bottom fade. Two plain gradient overlays replace the old
-   mask-image: a mask on a layer that contains an animated canvas forces the
-   browser to re-apply the mask on every frame. The background is a solid
-   color, so the look is the same. */
+/* Two gradient overlays instead of a mask: masking a layer that contains an
+   animated canvas forces the mask to be re-applied every frame. The
+   background is solid, so the visual result is the same. */
 .S5-why-bg-wrap::before,
 .S5-why-bg-wrap::after {
   content: "";
@@ -51,8 +48,8 @@
   background: linear-gradient(to top, #0a0a0a 0%, rgba(10, 10, 10, 0) 100%);
 }
 
-/* Static dot grid: pure CSS, drawn once, no JavaScript.
-   17.5px = dotRadius (1.5) + dotSpacing (16), same grid as the canvas. */
+/* Static dot grid used on phones / tablets / reduced motion.
+   17.5px = dotRadius (1.5) + dotSpacing (16), matching the canvas grid. */
 .S5-why-dots-static {
   position: absolute;
   inset: 0;
@@ -73,7 +70,7 @@
   mask-position: center;
 }
 
-/* Left-side dark shield for crisp readability */
+/* Left-side dark shield for crisp readability over the dots */
 .S5-why-dark-shield {
   position: absolute;
   top: 0;
@@ -91,18 +88,17 @@
   z-index: 2;
 }
 
-/* Strictly constrained inner container: max-width 1536px, 10px padding */
+/* ===== Inner container ===== */
 .S5-why-inner {
   position: relative;
   z-index: 3;
   width: 100%;
   max-width: 1536px;
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 0 40px;
   box-sizing: border-box;
 }
 
-/* Split-screen layout */
 .S5-why-grid {
   display: grid;
   grid-template-columns: 1.05fr 1.5fr;
@@ -110,16 +106,16 @@
   gap: 60px;
 }
 
-/* Left narrative column */
+/* ===== Left column ===== */
 .S5-why-heading-col {
   max-width: 560px;
 }
 
 .S5-why-eyebrow {
   margin: 0;
-  font-size: 14.5px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--accent, #c6f135);
 }
@@ -129,24 +125,23 @@
 }
 
 .S5-why-heading {
-  margin: 18px 0 0;
-  font-size: clamp(42px, 4.8vw, 64px);
-  font-weight: 800;
-  line-height: 1.06;
-  letter-spacing: -0.035em;
+  margin: 16px 0 0;
+  font-size: clamp(36px, 4.2vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
   color: #ffffff;
   -webkit-font-smoothing: antialiased;
 }
 
 .S5-why-sub {
-  margin: 22px 0 0;
-  font-size: clamp(17px, 1.25vw, 19.5px);
+  margin: 20px 0 0;
+  font-size: clamp(16px, 1.2vw, 18px);
   line-height: 1.65;
   color: rgba(245, 247, 250, 0.85);
   max-width: 490px;
 }
 
-/* Trust pill */
 .S5-why-assurance {
   display: inline-flex;
   align-items: center;
@@ -167,7 +162,7 @@
   flex-shrink: 0;
 }
 
-/* Right column: 2x2 grid */
+/* ===== Right column: 2x2 card grid ===== */
 .S5-why-cards-col {
   position: relative;
   width: 100%;
@@ -176,21 +171,20 @@
 .S5-why-list {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
+  gap: 24px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-/* Solid obsidian card (the <li> itself) */
 .S5-why-card {
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 220px;
-  padding: 26px 26px;
-  border-radius: 18px;
+  min-height: 260px;
+  padding: 30px;
+  border-radius: 20px;
   background: #111411;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.85);
@@ -209,9 +203,9 @@
 }
 
 .S5-icon-box {
-  width: 44px;
-  height: 44px;
-  border-radius: 11px;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
   background: rgba(198, 241, 53, 0.12);
   border: 1px solid rgba(198, 241, 53, 0.3);
   display: flex;
@@ -248,25 +242,25 @@
 
 /* Card body */
 .S5-card-content {
-  margin-top: 18px;
+  margin-top: 22px;
 }
 
 .S5-card-title {
   margin: 0;
-  font-size: 19px;
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.015em;
   color: #ffffff;
 }
 
 .S5-card-desc {
-  margin: 8px 0 0;
-  font-size: 14.5px;
+  margin: 10px 0 0;
+  font-size: 15.5px;
   line-height: 1.58;
   color: rgba(245, 247, 250, 0.75);
 }
 
-/* Hover interaction (only on devices with real hover) */
+/* Hover — desktop only */
 @media (hover: hover) {
   .S5-why-card:hover {
     transform: translateY(-3px);
@@ -282,11 +276,12 @@
   }
 }
 
-/* ===== Scroll reveal (CSS only, compositor friendly) =====
-   Only for users without reduced-motion. "backwards" fill: the first keyframe
-   is used during the delay, then the element returns to its normal style, so
-   the hover styles still work. */
-@media (prefers-reduced-motion: no-preference) {
+/* ===== Scroll reveal =====
+   Reveal only runs on desktop (>=1025px) for users who allow motion. Below
+   that, content appears immediately — the entrance reads as broken when the
+   section sits close to the fold. The "backwards" fill keeps the initial
+   keyframe during the delay, then releases so hover styles still work. */
+@media (min-width: 1025px) and (prefers-reduced-motion: no-preference) {
   .S5-why [data-reveal]:not(.is-revealed) {
     opacity: 0;
   }
@@ -301,7 +296,6 @@
   }
 }
 
-/* The title glides down into place, like the old scroll effect */
 @keyframes S5-descend {
   from {
     opacity: 0;
@@ -316,24 +310,54 @@
   }
 }
 
-/* ===== Responsive Layouts ===== */
-
-/* Laptops */
-@media screen and (max-width: 1200px) {
-  .S5-why-grid {
-    gap: 36px;
-  }
-
-  .S5-why-card {
-    min-height: 200px;
-    padding: 22px 20px;
+/* ===== 1536px ===== */
+@media (max-width: 1536px) {
+  .S5-why-inner {
+    padding: 0 40px;
   }
 }
 
-/* Tablets */
-@media screen and (max-width: 1024px) {
+/* ===== 1250px ===== */
+@media (max-width: 1250px) {
+  .S5-why-inner {
+    padding: 0 40px;
+  }
+
+  .S5-why-grid {
+    gap: 40px;
+  }
+
+  .S5-why-list {
+    gap: 20px;
+  }
+
+  .S5-why-card {
+    min-height: 240px;
+    padding: 26px;
+  }
+
+  .S5-icon-box {
+    width: 48px;
+    height: 48px;
+  }
+
+  .S5-card-title {
+    font-size: 20px;
+  }
+
+  .S5-card-desc {
+    font-size: 15px;
+  }
+}
+
+/* ===== 1024px: stack to one column, reveal off ===== */
+@media (max-width: 1024px) {
   .S5-why {
-    padding: 96px 0;
+    padding: 100px 0 50px;
+  }
+
+  .S5-why-inner {
+    padding: 0 30px;
   }
 
   .S5-why-dark-shield {
@@ -343,45 +367,154 @@
 
   .S5-why-grid {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 48px;
   }
 
   .S5-why-heading-col {
     max-width: 100%;
   }
 
-  .S5-why-heading {
-    font-size: 38px;
+  .S5-why-sub {
+    max-width: 620px;
+  }
+
+  .S5-why-list {
+    gap: 20px;
+  }
+
+  .S5-why-card {
+    min-height: 220px;
+    padding: 26px;
+  }
+
+  .S5-icon-box {
+    width: 46px;
+    height: 46px;
+  }
+
+  .S5-card-title {
+    font-size: 19px;
+  }
+
+  .S5-card-desc {
+    font-size: 14.5px;
   }
 }
 
-/* Mobile devices */
-@media screen and (max-width: 640px) {
-  .S5-why {
-    --S5-stagger: 0s; /* each card reveals alone when it enters the screen */
-    padding: 72px 0;
+/* ===== 768px: centered heading ===== */
+@media (max-width: 768px) {
+  .S5-why-inner {
+    padding: 0 20px;
   }
 
-  .S5-why-heading {
-    font-size: 30px;
+  .S5-why-heading-col {
+    text-align: center;
+    margin: 0 auto;
   }
 
   .S5-why-sub {
-    font-size: 15.5px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .S5-why-assurance {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .S5-why-list {
+    gap: 18px;
+  }
+
+  .S5-why-card {
+    min-height: 200px;
+    padding: 24px;
+  }
+
+  .S5-icon-box {
+    width: 44px;
+    height: 44px;
+  }
+
+  .S5-card-title {
+    font-size: 18px;
+  }
+
+  .S5-card-desc {
+    font-size: 14px;
+  }
+}
+
+/* ===== 640px: single-column cards ===== */
+@media (max-width: 640px) {
+  .S5-why {
+    --S5-stagger: 0s;
+    padding: 100px 0 50px;
+  }
+
+  .S5-why-inner {
+    padding: 0 15px;
   }
 
   .S5-why-list {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 16px;
   }
 
   .S5-why-card {
     min-height: auto;
-    padding: 22px 20px;
+    padding: 24px 22px;
+  }
+
+  .S5-card-content {
+    margin-top: 18px;
   }
 }
 
-/* Reduced motion mode */
+/* ===== 480px ===== */
+@media (max-width: 480px) {
+  .S5-why-inner {
+    padding: 0 15px;
+  }
+
+  .S5-why-eyebrow {
+    font-size: 12.5px;
+  }
+
+  .S5-why-sub {
+    font-size: 14.5px;
+  }
+
+  .S5-why-assurance {
+    padding: 8px 16px;
+    font-size: 12.5px;
+  }
+
+  .S5-why-card {
+    padding: 20px 18px;
+  }
+
+  .S5-icon-box {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+  }
+
+  .S5-card-content {
+    margin-top: 16px;
+  }
+
+  .S5-card-title {
+    font-size: 17px;
+  }
+
+  .S5-card-desc {
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+}
+
+/* ===== Reduced motion ===== */
 @media (prefers-reduced-motion: reduce) {
   .S5-why-card,
   .S5-icon-box {
