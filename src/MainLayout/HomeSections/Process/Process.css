@@ -2,12 +2,11 @@
 .S4-process {
   position: relative;
   width: 100%;
-  padding: 50px 40px 180px;
+  padding: 100px 40px 50px;
   background-color: #0a0a0a;
   overflow: hidden;
 }
 
-/* Strictly constrained inner container: max-width 1536px, no extra padding */
 .S4-process-inner {
   width: 100%;
   max-width: 1536px;
@@ -45,10 +44,9 @@
 /* ===== Track and connector ===== */
 .S4-process-track {
   position: relative;
-  margin-top: 88px;
+  margin-top: 72px;
 }
 
-/* Horizontal base line */
 .S4-process-connector-base {
   position: absolute;
   top: 22px;
@@ -59,7 +57,6 @@
   pointer-events: none;
 }
 
-/* Animated drawing line */
 .S4-process-connector-active {
   position: absolute;
   top: 22px;
@@ -79,7 +76,6 @@
   transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1) 0.2s;
 }
 
-/* Draw the line in once the track enters the viewport */
 .S4-process-track.is-revealed .S4-process-connector-active {
   transform: scaleX(1);
 }
@@ -101,8 +97,10 @@
   cursor: default;
 }
 
-/* Numbered node circle */
+/* border-box so the visual centre sits at exactly width / 2 — the vertical
+   connector relies on this to stay centred on the circle. */
 .S4-process-num {
+  box-sizing: border-box;
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -124,7 +122,6 @@
     transform 0.25s ease;
 }
 
-/* Step typography */
 .S4-process-step-title {
   margin: 28px 0 0;
   font-size: 20px;
@@ -142,7 +139,6 @@
   color: #f5f7fab8;
 }
 
-/* Subtle interactive hover */
 @media (hover: hover) and (pointer: fine) {
   .S4-process-step:hover .S4-process-num {
     border-color: var(--accent, #c6f135);
@@ -157,7 +153,6 @@
 }
 
 /* ===== Scroll reveal ===== */
-/* Base state before an element enters the viewport */
 [data-reveal] {
   opacity: 0;
   transform: translateY(16px);
@@ -166,7 +161,6 @@
     transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Applied by the IntersectionObserver once the element is in view */
 [data-reveal].is-revealed {
   opacity: 1;
   transform: translateY(0);
@@ -175,14 +169,14 @@
 /* ===== 1536px ===== */
 @media (max-width: 1536px) {
   .S4-process {
-    padding: 50px 40px 170px;
+    padding: 100px 40px 50px;
   }
 }
 
 /* ===== 1250px ===== */
 @media (max-width: 1250px) {
   .S4-process {
-    padding: 50px 40px 150px;
+    padding: 100px 40px 50px;
   }
 
   .S4-heading {
@@ -190,7 +184,7 @@
   }
 
   .S4-process-track {
-    margin-top: 74px;
+    margin-top: 64px;
   }
 
   .S4-process-list {
@@ -201,7 +195,17 @@
 /* ===== 1024px ===== */
 @media (max-width: 1024px) {
   .S4-process {
-    padding: 48px 30px 130px;
+    padding: 100px 30px 50px;
+  }
+
+  /* Reveal is disabled from here down — the entrance animation reads as
+     broken when the heading sits directly under the previous section.
+     The connector line still animates because JS still adds "is-revealed". */
+  [data-reveal],
+  [data-reveal].is-revealed {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 
   .S4-heading {
@@ -209,7 +213,7 @@
   }
 
   .S4-process-track {
-    margin-top: 62px;
+    margin-top: 56px;
   }
 
   .S4-process-list {
@@ -238,7 +242,7 @@
 /* ===== 768px: vertical timeline, centered heading ===== */
 @media (max-width: 768px) {
   .S4-process {
-    padding: 80px 20px 110px;
+    padding: 100px 20px 50px;
   }
 
   .S4-heading-wrap {
@@ -253,27 +257,28 @@
 
   .S4-heading {
     font-size: clamp(28px, 5.2vw, 34px);
-    margin-top: 12px;
+    margin-top: 16px;
   }
 
+  /* Max-width lives on the track, not the list, so the connector — which is
+     positioned against the track — stays aligned with the circles. */
   .S4-process-track {
-    margin-top: 50px;
+    max-width: 520px;
+    margin: 48px auto 0;
   }
 
   .S4-process-list {
     grid-template-columns: 1fr;
     gap: 34px;
-    max-width: 520px;
-    margin: 0 auto;
   }
 
-  /* Connector flips to vertical. Height is bound to the list so the line
-     lands on the first and last circle centres, not the track's outer box. */
+  /* Vertical connector. Height is bound to the list so the line lands on the
+     first and last circle centres. left values match each circle's centre. */
   .S4-process-connector-base,
   .S4-process-connector-active {
     top: 22px;
     bottom: auto;
-    left: 21px;
+    left: 22px;
     right: auto;
     width: 1px;
     height: calc(100% - 44px);
@@ -318,7 +323,7 @@
 /* ===== 640px ===== */
 @media (max-width: 640px) {
   .S4-process {
-    padding: 72px 15px 96px;
+    padding: 100px 15px 50px;
   }
 
   .S4-heading {
@@ -326,12 +331,12 @@
   }
 
   .S4-process-track {
-    margin-top: 42px;
+    max-width: 480px;
+    margin: 42px auto 0;
   }
 
   .S4-process-list {
     gap: 30px;
-    max-width: 480px;
   }
 
   .S4-process-step {
@@ -347,7 +352,7 @@
   .S4-process-connector-base,
   .S4-process-connector-active {
     top: 20px;
-    left: 19px;
+    left: 20px;
     height: calc(100% - 40px);
   }
 
@@ -363,7 +368,7 @@
 /* ===== 480px ===== */
 @media (max-width: 480px) {
   .S4-process {
-    padding: 64px 15px 84px;
+    padding: 100px 15px 50px;
   }
 
   .S4-heading-eyebrow {
@@ -375,12 +380,12 @@
   }
 
   .S4-process-track {
-    margin-top: 36px;
+    max-width: 100%;
+    margin: 36px auto 0;
   }
 
   .S4-process-list {
     gap: 26px;
-    max-width: 100%;
   }
 
   .S4-process-step {
@@ -396,7 +401,7 @@
   .S4-process-connector-base,
   .S4-process-connector-active {
     top: 18px;
-    left: 17px;
+    left: 18px;
     height: calc(100% - 36px);
   }
 

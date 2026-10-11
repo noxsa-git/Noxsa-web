@@ -1,8 +1,6 @@
 import { useEffect, useRef } from "react";
 import "./Process.css";
 
-// The three step definitions. Kept at module scope so the array identity is
-// stable across renders.
 const steps = [
   {
     number: "01",
@@ -21,9 +19,9 @@ const steps = [
   },
 ];
 
-// One IntersectionObserver for the whole section. When an element with
-// data-reveal enters the screen, we add "is-revealed" and stop watching it.
-// The animation itself is pure CSS, so scroll never triggers a React render.
+// Adds "is-revealed" to [data-reveal] targets when they cross the fold, then
+// stops watching them. The animation itself is CSS, so scroll never triggers
+// a React render.
 function useRevealOnScroll(rootRef) {
   useEffect(() => {
     const root = rootRef.current;
@@ -34,7 +32,6 @@ function useRevealOnScroll(rootRef) {
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    // No observer needed: show everything right away.
     if (reduceMotion || !("IntersectionObserver" in window)) {
       targets.forEach((el) => el.classList.add("is-revealed"));
       return undefined;
@@ -45,12 +42,9 @@ function useRevealOnScroll(rootRef) {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
           entry.target.classList.add("is-revealed");
-          // Play once, then stop watching this element.
           observer.unobserve(entry.target);
         }
       },
-      // Wait until the element is ~80px inside the viewport so the reveal
-      // doesn't fire the moment it clips the fold.
       { rootMargin: "0px 0px -80px 0px" },
     );
 
@@ -72,7 +66,6 @@ export default function Process() {
       aria-labelledby="process-title"
       className="S4-process">
       <div className="S4-process-inner">
-        {/* Section heading */}
         <div className="S4-heading-wrap" data-reveal>
           <p className="S4-heading-eyebrow">
             02 <span>/ Our process</span>
@@ -82,15 +75,12 @@ export default function Process() {
           </h2>
         </div>
 
-        {/* Process track with animated connector line */}
         <div className="S4-process-track" data-reveal>
-          {/* Base track line */}
           <span className="S4-process-connector-base" aria-hidden="true" />
-          {/* Active gradient line that draws in */}
           <span className="S4-process-connector-active" aria-hidden="true" />
 
-          {/* <ol> = ordered steps. role="list" is kept on purpose:
-              Safari / VoiceOver removes list meaning when list-style is none. */}
+          {/* role="list" is kept on purpose: Safari / VoiceOver drops list
+              semantics when list-style is none. */}
           <ol className="S4-process-list" role="list">
             {steps.map((step) => (
               <li key={step.number} className="S4-process-step" data-reveal>
