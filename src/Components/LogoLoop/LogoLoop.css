@@ -6,7 +6,7 @@
   overflow: hidden;
 }
 
-/* Small breathing room so hover lift / glow of the pills is not clipped */
+/* Breathing room so hover lift / glow doesn't clip against overflow:hidden. */
 .logoloop--horizontal {
   padding-block: 6px;
   margin-block: -6px;
@@ -41,7 +41,6 @@
   align-items: center;
 }
 
-/* Edge fade gradients */
 .logoloop--fade::before,
 .logoloop--fade::after {
   content: "";
@@ -71,7 +70,7 @@
   );
 }
 
-/* Reduced motion: no marquee, show all items in a normal wrapping row */
+/* Reduced motion: drop the marquee, wrap items like a normal list. */
 .logoloop--static .logoloop__track {
   width: 100%;
   transform: none !important;
@@ -88,7 +87,7 @@
   display: none;
 }
 
-/* Safety net before JS reads the user setting */
+/* Pre-JS safety net for reduced-motion users. */
 @media (prefers-reduced-motion: reduce) {
   .logoloop__track {
     transform: none !important;

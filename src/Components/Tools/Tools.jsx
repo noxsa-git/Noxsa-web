@@ -9,11 +9,10 @@ import {
   SiFirebase,
   SiJsonwebtokens,
 } from "react-icons/si";
-import "./Tools.css";
 import { FaCss3Alt } from "react-icons/fa";
 import LogoLoop from "../LogoLoop/LogoLoop";
+import "./Tools.css";
 
-// 10 core technologies
 const techStack = [
   { name: "HTML5", icon: SiHtml5, color: "#e34f26" },
   { name: "CSS3", icon: FaCss3Alt, color: "#1572b6" },
@@ -27,10 +26,7 @@ const techStack = [
   { name: "JWT", icon: SiJsonwebtokens, color: "#d63aff" },
 ];
 
-// Built once (outside the component) so LogoLoop always receives the same
-// array reference — its memo() and useMemo() really take effect.
-// The card is a <span> because LogoLoop wraps it in a <span>
-// (a <div> inside a <span> is invalid HTML).
+// Built once at module scope — the loop clones this list, so it must be stable.
 const logoItems = techStack.map(({ name, icon: Icon, color }) => ({
   node: (
     <span className="S2-tech-card">
@@ -47,11 +43,8 @@ const logoItems = techStack.map(({ name, icon: Icon, color }) => ({
 
 export default function Tools() {
   return (
-    // The visible sentence names the section (aria-labelledby), so sighted
-    // users and screen readers get the same label.
     <section aria-labelledby="tools-label" className="S2-tools">
       <div className="S2-tools-inner">
-        {/* Left: credibility label */}
         <div className="S2-tools-header">
           <span className="S2-tools-dot" aria-hidden="true" />
           <p id="tools-label" className="S2-tools-label">
@@ -59,7 +52,6 @@ export default function Tools() {
           </p>
         </div>
 
-        {/* Right: continuous marquee (rendered as a real <ul> list) */}
         <div className="S2-tools-ticker-wrap">
           <LogoLoop
             logos={logoItems}

@@ -2,9 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
 import "./LogoLoop.css";
 
 const ANIMATION_CONFIG = {
-  SMOOTH_TAU: 0.25, // how soft the speed change is when hover starts/ends
+  // Exponential smoothing for velocity changes on hover start / leave.
+  SMOOTH_TAU: 0.25,
   MIN_COPIES: 2,
-  COPY_HEADROOM: 1, // exact minimum for a seamless loop (was 2 = one wasted copy)
+  // One copy per viewport is all a seamless loop needs.
+  COPY_HEADROOM: 1,
 };
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
@@ -12,10 +14,8 @@ const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const toCssLength = (value) =>
   typeof value === "number" ? `${value}px` : (value ?? undefined);
 
-// Keep 2 decimals: stable against sub-pixel noise, but exact enough for a seamless loop
+// Round to 2dp — kills sub-pixel drift without breaking the wrap math.
 const round2 = (n) => Math.round(n * 100) / 100;
-
-// ===== Hooks =====
 
 const usePrefersReducedMotion = () => {
   const [reduced, setReduced] = useState(
@@ -37,8 +37,7 @@ const usePrefersReducedMotion = () => {
   return reduced;
 };
 
-// Observes the container and the first list.
-// Refs are stable, so this effect is created once (not on every render).
+// Stable refs → observer is created once for the component's lifetime.
 const useResizeObserver = (callback, containerRef, seqRef) => {
   useEffect(() => {
     if (typeof ResizeObserver === "undefined") {
@@ -74,7 +73,7 @@ const useAnimationLoop = ({
     const container = containerRef.current;
     if (!track || !container) return undefined;
 
-    // Static mode (reduced motion): no loop at all
+    // Static mode: bail out entirely, nothing to animate.
     if (disabled) {
       track.style.transform = "";
       return undefined;
@@ -111,7 +110,7 @@ const useAnimationLoop = ({
       const easing = 1 - Math.exp(-dt / ANIMATION_CONFIG.SMOOTH_TAU);
       velocityRef.current += (target - velocityRef.current) * easing;
 
-      // Fully paused (hover) -> do nothing, no style writes
+      // Fully settled into a pause — skip the style write entirely.
       if (target === 0 && Math.abs(velocityRef.current) < 0.05) {
         velocityRef.current = 0;
         return;
@@ -136,7 +135,6 @@ const useAnimationLoop = ({
       last = null;
     };
 
-    // Do not animate when the marquee is off-screen or the tab is hidden
     const io = new IntersectionObserver(([entry]) => {
       inView = entry.isIntersecting;
       if (inView) start();
@@ -170,8 +168,6 @@ const useAnimationLoop = ({
   ]);
 };
 
-// ===== Component =====
-
 export const LogoLoop = memo(
   ({
     logos,
@@ -193,7 +189,7 @@ export const LogoLoop = memo(
     const containerRef = useRef(null);
     const trackRef = useRef(null);
     const seqRef = useRef(null);
-    // Hover is a ref (not state): hovering no longer re-renders the component
+    // Hover as a ref, not state — pausing shouldn't re-render the list.
     const hoveredRef = useRef(false);
 
     const [seqWidth, setSeqWidth] = useState(0);
@@ -282,7 +278,7 @@ export const LogoLoop = memo(
       [isVertical, fadeOut, scaleOnHover, isStatic, className],
     );
 
-    // Mouse only: on phones a tap should not "stick" the marquee in a paused state
+    // Ignore touch — tap-pausing a marquee on mobile feels broken.
     const handlePointerEnter = useCallback(
       (e) => {
         if (effectiveHoverSpeed === undefined) return;
@@ -296,7 +292,6 @@ export const LogoLoop = memo(
       hoveredRef.current = false;
     }, []);
 
-    // Keyboard users: pause while something inside has focus
     const handleFocus = useCallback(() => {
       if (effectiveHoverSpeed !== undefined) hoveredRef.current = true;
     }, [effectiveHoverSpeed]);
@@ -338,7 +333,7 @@ export const LogoLoop = memo(
                 target="_blank"
                 rel="noreferrer noopener"
                 aria-label={item.title}
-                // copies are hidden from screen readers, so keep them out of tab order too
+                // Duplicated copies are aria-hidden — keep them out of tab order too.
                 tabIndex={isCopy ? -1 : undefined}>
                 {content}
               </a>
@@ -356,8 +351,7 @@ export const LogoLoop = memo(
     const logoLists = useMemo(
       () =>
         Array.from({ length: renderedCopies }, (_, copyIndex) => (
-          // role="list" is kept on purpose: Safari/VoiceOver removes list
-          // semantics when list-style is none.
+          // Safari / VoiceOver drops list semantics with list-style:none — keep role="list".
           <ul
             className="logoloop__list"
             key={`copy-${copyIndex}`}
@@ -382,8 +376,7 @@ export const LogoLoop = memo(
       [width, cssVariables, style],
     );
 
-    // No role="region" here: the parent <section> is already the landmark.
-    // Two nested landmarks with labels would be noisy for screen readers.
+    // No role="region" — parent <section> is already the landmark.
     return (
       <div ref={containerRef} className={rootClassName} style={containerStyle}>
         <div
