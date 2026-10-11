@@ -1,8 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Renderer, Program, Mesh, Triangle } from "ogl";
 
-/* ---------- helpers ---------- */
-
 const hexToRgb = (hex) => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   if (!result) return [1, 1, 1];
@@ -13,22 +11,17 @@ const hexToRgb = (hex) => {
   ];
 };
 
-// Fewer ray-march steps = much cheaper shader. (Was 40 / 70 / 110)
 const detailToSteps = (detail) => {
   if (detail === "low") return 32.0;
   if (detail === "high") return 90.0;
   return 56.0;
 };
 
-/* ---------- adaptive quality settings ---------- */
-
-const MIN_SCALE = 0.35; // lowest render resolution (relative to CSS pixels)
-const WARMUP_FRAMES = 30; // ignore the first frames (shader compile, etc.)
-const SAMPLE_FRAMES = 40; // measure average frame time every N frames
-const SLOW_MS = 22; // slower than ~45fps -> lower the quality
-const FAIL_MS = 32; // slower than ~30fps even at lowest quality -> give up
-
-/* ---------- shaders ---------- */
+const MIN_SCALE = 0.35;
+const WARMUP_FRAMES = 30;
+const SAMPLE_FRAMES = 40;
+const SLOW_MS = 22;
+const FAIL_MS = 32;
 
 const vertex = `#version 300 es
 in vec2 position;
@@ -155,8 +148,6 @@ void main() {
 }
 `;
 
-/* ---------- component ---------- */
-
 export default function GradientWaves({
   horizonColor = "#071109",
   waveColor = "#122a15",
@@ -178,12 +169,8 @@ export default function GradientWaves({
   parallaxStrength = 0.35,
   grain = true,
   grainIntensity = 0.04,
-  // Render resolution relative to CSS pixels (0.6 = 36% of the pixels of 1.0).
-  // Waves are soft, so a low value looks almost the same but is MUCH cheaper.
   resolution = 0.6,
-  // Called after the first frames are drawn (use it to fade the canvas in).
   onReady,
-  // Called if WebGL fails, the context is lost, or the device is too slow.
   onError,
   className = "",
 }) {
@@ -198,7 +185,6 @@ export default function GradientWaves({
     onErrorRef.current = onError;
   }, [onReady, onError]);
 
-  /* ----- create the scene once ----- */
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return undefined;
@@ -209,7 +195,7 @@ export default function GradientWaves({
         try {
           cleanups.pop()();
         } catch {
-          /* ignore cleanup errors */
+          cleanups.length = 0;
         }
       }
     };
@@ -284,7 +270,6 @@ export default function GradientWaves({
 
       const u = program.uniforms;
 
-      /* ----- sizing (with adaptive resolution) ----- */
       let scale = Math.min(Math.max(resolution, MIN_SCALE), 1);
 
       const applySize = () => {
@@ -293,7 +278,6 @@ export default function GradientWaves({
         const h = Math.max(1, Math.floor(rect.height));
         renderer.dpr = scale;
         renderer.setSize(w, h);
-        // The canvas is drawn small and stretched by CSS (cheap + smooth).
         canvas.style.width = "100%";
         canvas.style.height = "100%";
         u.iResolution.value[0] = gl.drawingBufferWidth;
@@ -302,13 +286,12 @@ export default function GradientWaves({
 
       const ro = new ResizeObserver(() => {
         applySize();
-        renderer.render({ scene: mesh }); // avoid a blank flash while resizing
+        renderer.render({ scene: mesh });
       });
       ro.observe(container);
       cleanups.push(() => ro.disconnect());
       applySize();
 
-      /* ----- mouse (window level, smooth) ----- */
       const mouse = [0.5, 0.5];
       const target = [0.5, 0.5];
 
@@ -334,7 +317,6 @@ export default function GradientWaves({
         );
       });
 
-      /* ----- context loss ----- */
       const onContextLost = (e) => {
         e.preventDefault();
         onErrorRef.current?.(new Error("WebGL context lost"));
@@ -344,7 +326,6 @@ export default function GradientWaves({
         canvas.removeEventListener("webglcontextlost", onContextLost),
       );
 
-      /* ----- render loop ----- */
       let isVisible = true;
       let isPageVisible = !document.hidden;
       let lastT = 0;
@@ -362,10 +343,9 @@ export default function GradientWaves({
 
         const dt = lastT ? Math.min((now - lastT) / 1000, 0.1) : 0.016;
         lastT = now;
-        time += dt; // own clock: no time jump after pause/resume
+        time += dt;
         u.iTime.value = time;
 
-        // Frame-rate independent smoothing -> same feel at 60Hz / 144Hz
         const k = 1 - Math.exp(-dt * 7);
         const tx = enableMouseRef.current ? target[0] : 0.5;
         const ty = enableMouseRef.current ? target[1] : 0.5;
@@ -382,7 +362,6 @@ export default function GradientWaves({
           onReadyRef.current?.();
         }
 
-        // Adaptive quality: lower resolution -> fewer steps -> give up.
         if (frames > WARMUP_FRAMES) {
           sampleMs += dt * 1000;
           sampleCount += 1;
@@ -456,10 +435,9 @@ export default function GradientWaves({
       disposed = true;
       teardown();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // Keep the WebGL scene mounted; prop changes update uniforms below.
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  /* ----- update uniforms when props change ----- */
   useEffect(() => {
     const program = programRef.current;
     if (!program) return;
