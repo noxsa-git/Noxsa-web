@@ -8,22 +8,12 @@ import {
 } from "lucide-react";
 import "./Contact.css";
 
-// Direct contact channels__
 const emailAddress = "noxsahq@gmail.com";
 const whatsappNumber = "+880 1300-061300";
 const whatsappUrl = "https://wa.me/8801300061300";
 
-// Project types shown as selectable pills__
-const projectTypes = [
-  "Web Development",
-  "Custom Software",
-  "Digital Growth",
-  "Video & Visual Content",
-  "Something else",
-];
-
-// One IntersectionObserver for the section. It adds "is-revealed" to each
-// [data-reveal] element once, and the animation itself is pure CSS.
+// Adds "is-revealed" to [data-reveal] targets when they cross the fold, then
+// stops watching them. The animation is CSS, so scroll never triggers a render.
 function useRevealOnScroll(rootRef) {
   useEffect(() => {
     const root = rootRef.current;
@@ -41,11 +31,11 @@ function useRevealOnScroll(rootRef) {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
           entry.target.classList.add("is-revealed");
           observer.unobserve(entry.target);
-        });
+        }
       },
       { rootMargin: "0px 0px -60px 0px" },
     );
@@ -64,10 +54,9 @@ export default function Contact() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    projectType: "",
     message: "",
   });
-  const [status, setStatus] = useState("idle"); // "idle" | "submitting" | "success"
+  const [status, setStatus] = useState("idle");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -78,13 +67,12 @@ export default function Contact() {
     e.preventDefault();
     setStatus("submitting");
 
-    // TODO: replace with a real request to your backend.
-    // Example: await fetch("/api/contact", { method: "POST", body: JSON.stringify(form) });
-    // For now, we simulate a short delay so the loading state is visible.
+    // Simulated delay so the loading state is visible. Replace with a real
+    // POST to your backend when the endpoint is ready.
     await new Promise((resolve) => setTimeout(resolve, 600));
 
     setStatus("success");
-    setForm({ name: "", email: "", projectType: "", message: "" });
+    setForm({ name: "", email: "", message: "" });
   };
 
   return (
@@ -94,10 +82,9 @@ export default function Contact() {
       aria-labelledby="contact-title"
       className="S7-contact">
       <div className="S7-contact-inner">
-        {/* Header */}
         <div className="S7-contact-header" data-reveal>
           <p className="S7-eyebrow">
-            05 <span>/ Contact</span>
+            06 <span>/ Contact</span>
           </p>
           <h2 id="contact-title" className="S7-heading">
             Let&rsquo;s build something.
@@ -109,7 +96,6 @@ export default function Contact() {
         </div>
 
         <div className="S7-contact-grid">
-          {/* Form card */}
           <div className="S7-form-card" data-reveal style={{ "--i": 0.5 }}>
             {status === "success" ? (
               <div className="S7-success" role="status">
@@ -126,7 +112,6 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="S7-form">
-                {/* Name + Email */}
                 <div className="S7-fields-row">
                   <div className="S7-field">
                     <label htmlFor="contact-name" className="S7-label">
@@ -162,27 +147,6 @@ export default function Contact() {
                   </div>
                 </div>
 
-                {/* Project type */}
-                <fieldset className="S7-fieldset">
-                  <legend className="S7-label">What do you need?</legend>
-                  <div className="S7-pills">
-                    {projectTypes.map((type) => (
-                      <label key={type} className="S7-pill">
-                        <input
-                          type="radio"
-                          name="projectType"
-                          value={type}
-                          checked={form.projectType === type}
-                          onChange={handleChange}
-                          className="S7-pill-input"
-                        />
-                        <span className="S7-pill-text">{type}</span>
-                      </label>
-                    ))}
-                  </div>
-                </fieldset>
-
-                {/* Message */}
                 <div className="S7-field">
                   <label htmlFor="contact-message" className="S7-label">
                     Message
@@ -191,7 +155,7 @@ export default function Contact() {
                     id="contact-message"
                     name="message"
                     required
-                    rows={5}
+                    rows={10}
                     placeholder="Share your project goals, timeline, and context."
                     className="S7-input S7-textarea"
                     value={form.message}
@@ -216,7 +180,6 @@ export default function Contact() {
             )}
           </div>
 
-          {/* Direct channels */}
           <aside
             className="S7-channels"
             data-reveal
