@@ -1,7 +1,8 @@
+/* ===== Who We Are Section ===== */
 .S7-who-section {
   position: relative;
   width: 100%;
-  padding: 20vh 0 100px;
+  padding: 100px 40px 50px;
   background-color: #0a0a0a;
   overflow: hidden;
   box-sizing: border-box;
@@ -12,13 +13,13 @@
   width: 100%;
   max-width: 1536px;
   margin: 0 auto;
-  padding: 0 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
 }
 
+/* ===== Lamp stage ===== */
 .S7-lamp-stage {
   position: relative;
   width: 100%;
@@ -523,6 +524,7 @@
   opacity: 0;
 }
 
+/* ===== Brand stage ===== */
 .S7-brand-stage {
   position: relative;
   display: flex;
@@ -530,7 +532,7 @@
   align-items: center;
   text-align: center;
   max-width: 680px;
-  margin-top: -10px;
+  margin-top: 20px;
   transition:
     opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
     filter 0.5s ease;
@@ -573,7 +575,7 @@
 .S7-logo-wrapper {
   position: relative;
   z-index: 2;
-  width: clamp(280px, 34vw, 460px);
+  width: clamp(240px, 30vw, 420px);
 }
 
 .S7-brand-logo {
@@ -594,9 +596,9 @@
 
 .S7-story-eyebrow {
   margin: 0;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--accent, #c6f135);
 }
@@ -606,22 +608,23 @@
 }
 
 .S7-story-title {
-  margin: 12px 0 0;
-  font-size: clamp(28px, 3.6vw, 44px);
-  font-weight: 800;
-  line-height: 1.15;
+  margin: 16px 0 0;
+  font-size: clamp(36px, 4.2vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
   letter-spacing: -0.025em;
   color: #ffffff;
 }
 
 .S7-story-text {
-  margin: 14px 0 0;
-  font-size: clamp(15px, 1.1vw, 16.5px);
+  margin: 20px 0 0;
+  font-size: clamp(16px, 1.2vw, 18px);
   line-height: 1.65;
   color: rgba(245, 247, 250, 0.78);
   max-width: 580px;
 }
 
+/* ===== Team grid ===== */
 .S7-team-grid {
   position: relative;
   z-index: 2;
@@ -629,7 +632,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   width: 100%;
-  margin: 64px 0 0;
+  margin: 56px 0 0;
   padding: 0;
   list-style: none;
   opacity: 1;
@@ -674,7 +677,7 @@
 
 .S7-team-photo {
   position: relative;
-  aspect-ratio: 4 / 4;
+  aspect-ratio: 1 / 1;
   width: 100%;
   border-radius: 14px;
   overflow: hidden;
@@ -753,10 +756,6 @@
   transition: color 0.2s ease;
 }
 
-.S7-team-card:hover .S7-team-name {
-  color: #ffffff;
-}
-
 .S7-team-role {
   margin: 6px 0 0;
   font-size: 14px;
@@ -764,6 +763,7 @@
   color: rgba(245, 247, 250, 0.72);
 }
 
+/* ===== Actions ===== */
 .S7-actions {
   position: relative;
   z-index: 2;
@@ -843,49 +843,282 @@
   box-shadow: 0 0 8px var(--accent, #c6f135);
 }
 
-@media screen and (max-width: 1024px) {
-  .S7-team-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    margin-top: 56px;
+/* ===== 1536px ===== */
+@media (max-width: 1536px) {
+  .S7-who-section {
+    padding: 100px 40px 50px;
   }
 }
 
-@media screen and (max-width: 768px) {
+/* ===== 1250px ===== */
+@media (max-width: 1250px) {
   .S7-who-section {
-    padding: 15vh 0 80px;
+    padding: 100px 40px 50px;
   }
+
   .S7-lamp-stage {
-    height: 240px;
-    font-size: 3.8px;
+    height: 270px;
+    font-size: 4.8px;
   }
+
   .S7-story-title {
-    font-size: 26px;
+    font-size: clamp(34px, 3.8vw, 46px);
   }
-  .S7-story-text {
-    font-size: 14px;
-  }
-  .S7-brand-stage {
-    margin-top: 0;
-  }
+
   .S7-team-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 20px;
+    margin-top: 52px;
+  }
+
+  .S7-team-card {
+    padding: 14px;
+  }
+
+  .S7-team-name {
+    font-size: 19px;
+  }
+
+  .S7-team-role {
+    font-size: 13.5px;
+  }
+}
+
+/* ===== 1024px ===== */
+@media (max-width: 1024px) {
+  .S7-who-section {
+    padding: 100px 30px 50px;
+  }
+
+  .S7-lamp-stage {
+    height: 260px;
+    font-size: 4.5px;
+  }
+
+  .S7-logo-wrapper {
+    width: clamp(220px, 28vw, 360px);
+  }
+
+  .S7-story-title {
+    font-size: clamp(30px, 4vw, 40px);
+  }
+
+  .S7-brand-stage {
+    margin-top: 40px;
+  }
+
+  .S7-story-text {
+    font-size: 16px;
+    max-width: 560px;
+  }
+
+  .S7-team-grid {
+    gap: 20px;
+    margin-top: 48px;
+  }
+
+  .S7-actions {
     margin-top: 48px;
   }
 }
 
+/* ===== 768px: 2-column cards, centered text ===== */
+@media (max-width: 768px) {
+  .S7-who-section {
+    padding: 100px 20px 50px;
+  }
+
+  .S7-lamp-stage {
+    height: 240px;
+    font-size: 3.8px;
+  }
+
+  .S7-story-title {
+    font-size: clamp(28px, 5.2vw, 34px);
+    margin-top: 12px;
+  }
+
+  .S7-story-text {
+    font-size: 15.5px;
+    margin-top: 18px;
+  }
+
+  .S7-team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 44px;
+  }
+
+  .S7-team-card {
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .S7-team-info {
+    padding: 16px 6px 8px;
+    transform: translateZ(22px);
+  }
+
+  .S7-team-name {
+    font-size: 18px;
+  }
+
+  .S7-team-role {
+    font-size: 13.5px;
+  }
+
+  .S7-actions {
+    margin-top: 44px;
+  }
+}
+
+/* ===== 640px: single-column cards, smaller cards ===== */
+@media (max-width: 640px) {
+  .S7-who-section {
+    padding: 100px 15px 50px;
+  }
+
+  .S7-lamp-stage {
+    height: 220px;
+    font-size: 3.4px;
+  }
+
+  .S7-logo-wrapper {
+    width: clamp(200px, 62vw, 300px);
+  }
+
+  .S7-story-title {
+    font-size: clamp(26px, 6vw, 32px);
+  }
+
+  .S7-story-text {
+    font-size: 15px;
+  }
+
+  .S7-team-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    max-width: 420px;
+    margin-top: 40px;
+  }
+
+  .S7-team-card {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  .S7-team-photo {
+    border-radius: 12px;
+  }
+
+  .S7-team-info {
+    padding: 14px 6px 6px;
+  }
+
+  .S7-team-name {
+    font-size: 18px;
+  }
+
+  .S7-team-role {
+    font-size: 13px;
+  }
+
+  .S7-actions {
+    margin-top: 40px;
+    gap: 16px 24px;
+  }
+
+  .S7-story-cta {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+}
+
+/* ===== 480px ===== */
+@media (max-width: 480px) {
+  .S7-who-section {
+    padding: 100px 15px 50px;
+  }
+
+  .S7-lamp-stage {
+    height: 200px;
+    font-size: 3px;
+  }
+
+  .S7-story-eyebrow {
+    font-size: 12.5px;
+  }
+
+  .S7-story-title {
+    font-size: clamp(24px, 7vw, 28px);
+  }
+
+  .S7-story-text {
+    font-size: 14.5px;
+    margin-top: 16px;
+  }
+
+  .S7-team-grid {
+    gap: 14px;
+    margin-top: 36px;
+  }
+
+  .S7-team-card {
+    padding: 10px;
+    border-radius: 16px;
+  }
+
+  .S7-team-photo {
+    border-radius: 10px;
+  }
+
+  .S7-team-info {
+    padding: 12px 4px 4px;
+  }
+
+  .S7-team-badge {
+    padding: 3px 8px;
+    margin-bottom: 8px;
+  }
+
+  .S7-team-position {
+    font-size: 10px;
+  }
+
+  .S7-team-name {
+    font-size: 17px;
+  }
+
+  .S7-team-role {
+    font-size: 12.5px;
+  }
+
+  .S7-actions {
+    margin-top: 36px;
+    gap: 14px;
+  }
+
+  .S7-click-prompt {
+    font-size: 12px;
+  }
+}
+
+/* ===== Reduced motion ===== */
 @media (prefers-reduced-motion: reduce) {
   .S7-bell-container {
     animation: none;
   }
+
   .S7-bell-rays::before {
     animation: none;
   }
+
   .S7-team-card {
     transition: none;
     transform: none !important;
   }
+
   .S7-team-photo img {
     transition: none;
   }

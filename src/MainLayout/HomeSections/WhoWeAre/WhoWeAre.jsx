@@ -6,21 +6,21 @@ import "./WhoWeAre.css";
 const teamMembers = [
   {
     name: "Sobur Hossen",
-    position: "Lead Developer",
-    role: "Senior Developer",
+    position: "Co-Founder",
+    role: "Lead Developer",
     image:
       "https://res.cloudinary.com/ysbpcq4w/image/upload/v1791558751/Sobur.png",
   },
   {
     name: "Aminul Islam",
-    position: "Creative Lead",
-    role: "Content and Video Editor",
+    position: "Co-Founder",
+    role: "Creative Lead",
     image:
       "https://res.cloudinary.com/ysbpcq4w/image/upload/v1791558755/Amin.png",
   },
   {
     name: "Marufur Rahman",
-    position: "Founding Member",
+    position: "Co-Founder",
     role: "Marketing Manager",
     image:
       "https://res.cloudinary.com/ysbpcq4w/image/upload/v1791558751/Fahim.png",
@@ -68,11 +68,7 @@ function TeamCard({ member }) {
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        style={{
-          rotateX,
-          rotateY,
-          scale,
-        }}>
+        style={{ rotateX, rotateY, scale }}>
         <div className="S7-team-photo">
           <img
             src={member.image}
@@ -97,13 +93,15 @@ function TeamCard({ member }) {
 }
 
 export default function WhoWeAre() {
-  const [isOn, setIsOn] = useState(false);
+  const [isOn, setIsOn] = useState(true);
   const toggleLamp = () => setIsOn((v) => !v);
 
   return (
-    <section className="S7-who-section" aria-label="WhoWeAre">
+    <section className="S7-who-section" aria-labelledby="who-title">
       <div className="S7-who-inner">
         <div className="S7-lamp-stage">
+          {/* A div is used here (not <button>) because the lamp is drawn from
+              dozens of positioned layers. Keyboard + ARIA are wired manually. */}
           <div
             className={`S7-bell-container ${!isOn ? "off" : ""}`}
             onClick={toggleLamp}
@@ -155,9 +153,9 @@ export default function WhoWeAre() {
           </div>
           <div className="S7-story-card">
             <p className="S7-story-eyebrow">
-              05<span>/ Whoweare</span>
+              05 <span>/ Who we are</span>
             </p>
-            <h2 className="S7-story-title">
+            <h2 id="who-title" className="S7-story-title">
               A small team with everything to prove.
             </h2>
             <p className="S7-story-text">
