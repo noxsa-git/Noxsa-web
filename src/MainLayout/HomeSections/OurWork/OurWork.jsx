@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { ArrowRightIcon } from "lucide-react";
 import "./OurWork.css";
 
-// 3 placeholder projects. Add an image URL and the <img> renders automatically.
+// Add an image URL and the <img> replaces the placeholder automatically.
 const projects = [
   {
     num: "01",
@@ -27,9 +27,8 @@ const projects = [
   },
 ];
 
-// One IntersectionObserver for the whole section. It adds "is-revealed" to
-// each [data-reveal] element once, and the animation itself is pure CSS.
-// Before: 6 framer-motion components, each with its own hooks.
+// Adds "is-revealed" to [data-reveal] targets when they cross the fold, then
+// stops watching them. The animation is CSS, so scroll never triggers a render.
 function useRevealOnScroll(rootRef) {
   useEffect(() => {
     const root = rootRef.current;
@@ -47,11 +46,11 @@ function useRevealOnScroll(rootRef) {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
           entry.target.classList.add("is-revealed");
           observer.unobserve(entry.target);
-        });
+        }
       },
       { rootMargin: "0px 0px -60px 0px" },
     );
@@ -74,8 +73,7 @@ export default function OurWork() {
       aria-labelledby="work-title"
       className="S6-work">
       <div className="S6-work-inner">
-        {/* Header */}
-        <div className="S6-work-header">
+        <header className="S6-work-header">
           <div data-reveal>
             <p className="S6-eyebrow">
               04 <span>/ Our work</span>
@@ -90,9 +88,9 @@ export default function OurWork() {
               blueprints, not borrowed logos.
             </p>
           </div>
-        </div>
+        </header>
 
-        {/* Project list. The <li> is the card, so there is no extra wrapper. */}
+        {/* The <li> is the card, so there is no extra wrapper. */}
         <ul className="S6-work-grid" role="list">
           {projects.map((project, i) => (
             <li
@@ -133,9 +131,9 @@ export default function OurWork() {
           ))}
         </ul>
 
-        {/* Call to action. Only the button is a link (clean name for screen
-            readers), and its ::after stretches over the whole card so the
-            whole strip is still one big click target. */}
+        {/* Stretched link: only the button is a link (clean accessible name),
+            and its ::after covers the whole card so the strip is still one
+            click target. */}
         <div className="S6-work-cta" data-reveal style={{ "--i": 1.5 }}>
           <div className="S6-cta-text-wrap">
             <p className="S6-cta-primary">
