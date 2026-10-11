@@ -1,7 +1,8 @@
-import "./Process.css";
 import { useEffect, useRef } from "react";
+import "./Process.css";
 
-// 3 process steps__
+// The three step definitions. Kept at module scope so the array identity is
+// stable across renders.
 const steps = [
   {
     number: "01",
@@ -22,8 +23,7 @@ const steps = [
 
 // One IntersectionObserver for the whole section. When an element with
 // data-reveal enters the screen, we add "is-revealed" and stop watching it.
-// The animation itself is pure CSS (GPU compositor), so no React re-render
-// and no JS work per frame.
+// The animation itself is pure CSS, so scroll never triggers a React render.
 function useRevealOnScroll(rootRef) {
   useEffect(() => {
     const root = rootRef.current;
@@ -34,7 +34,7 @@ function useRevealOnScroll(rootRef) {
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    // No observer needed: show everything right away
+    // No observer needed: show everything right away.
     if (reduceMotion || !("IntersectionObserver" in window)) {
       targets.forEach((el) => el.classList.add("is-revealed"));
       return undefined;
@@ -42,13 +42,15 @@ function useRevealOnScroll(rootRef) {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
           entry.target.classList.add("is-revealed");
-          // play once, then stop watching
+          // Play once, then stop watching this element.
           observer.unobserve(entry.target);
-        });
+        }
       },
+      // Wait until the element is ~80px inside the viewport so the reveal
+      // doesn't fire the moment it clips the fold.
       { rootMargin: "0px 0px -80px 0px" },
     );
 
@@ -93,7 +95,7 @@ export default function Process() {
             {steps.map((step) => (
               <li key={step.number} className="S4-process-step" data-reveal>
                 {/* The <ol> already numbers the steps for screen readers,
-                    so the visual "01" is hidden from them */}
+                    so the visual "01" is hidden from them. */}
                 <span className="S4-process-num" aria-hidden="true">
                   {step.number}
                 </span>

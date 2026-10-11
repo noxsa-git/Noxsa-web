@@ -2,8 +2,10 @@
 .S3-services-pin-container {
   position: relative;
   width: 100%;
-  height: 350vh;
+  height: calc(350vh + 150px);
+  padding: 100px 0 0;
   background-color: #0a0a0a;
+  box-sizing: border-box;
 }
 
 /* Sticky viewport */
@@ -20,7 +22,6 @@
   box-sizing: border-box;
 }
 
-/* Subtle, organic background light behind cards */
 .S3-services-sticky::after {
   content: "";
   position: absolute;
@@ -39,7 +40,6 @@
   z-index: 1;
 }
 
-/* Strictly constrained inner layout: max-width 1536px, 10px left/right padding */
 .S3-services-inner {
   position: relative;
   z-index: 2;
@@ -50,7 +50,7 @@
   width: 100%;
   max-width: 1536px;
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 0 40px;
   box-sizing: border-box;
 }
 
@@ -58,7 +58,6 @@
 .S3-services-left {
   position: relative;
   z-index: 10;
-  padding-left: 10px;
 }
 
 .S3-heading-wrap {
@@ -80,29 +79,28 @@
 }
 
 .S3-heading {
-  margin: 18px 0 0;
-  font-size: clamp(42px, 4.6vw, 70px);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  margin: 16px 0 0;
+  font-size: clamp(36px, 4.2vw, 52px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
   color: #ffffff;
   -webkit-font-smoothing: antialiased;
 }
 
 .S3-heading-sub {
-  margin: 22px 0 0;
+  margin: 20px 0 0;
   font-size: clamp(16px, 1.2vw, 18px);
   line-height: 1.65;
   color: var(--muted, rgba(245, 247, 250, 0.75));
   max-width: 520px;
 }
 
-/* Clean progress tracker */
 .S3-progress-row {
   display: flex;
   align-items: center;
   gap: 18px;
-  margin-top: 40px;
+  margin-top: 36px;
 }
 
 .S3-progress-bar-track {
@@ -136,12 +134,11 @@
   color: rgba(255, 255, 255, 0.4);
 }
 
-/* Scroll prompt */
 .S3-scroll-hint {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin-top: 24px;
+  margin-top: 20px;
   font-size: 13px;
   font-weight: 500;
   color: rgba(245, 247, 250, 0.45);
@@ -152,7 +149,6 @@
   color: var(--accent, #c6f135);
 }
 
-/* Renamed from "bounce": a generic name can clash with other CSS files */
 @keyframes S3-bounce {
   0%,
   100% {
@@ -170,10 +166,8 @@
   align-items: center;
   justify-content: center;
   height: 620px;
-  padding-right: 10px;
 }
 
-/* It is a <ul> now, so the default list styles are reset */
 .S3-card-swap-viewport {
   position: relative;
   width: 700px;
@@ -181,8 +175,6 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  /* perspective / preserve-3d removed: the cards only move in 2D (x, y, scale),
-     so they did nothing except make the browser build a heavier 3D layer tree */
 }
 
 /* ===== Border glow physics ===== */
@@ -202,14 +194,10 @@
   isolation: isolate;
   list-style: none;
 
-  /* Crisp text rendering */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: geometricPrecision;
 
-  /* Framer Motion animates this element's transform every frame.
-     NOTE: the old "transform: skewY(-4deg)" here never applied, because
-     Framer Motion writes an inline transform that overrides it. Removed. */
   will-change: transform, opacity;
 
   box-shadow:
@@ -218,7 +206,6 @@
   transition: box-shadow 0.25s ease;
 }
 
-/* Hover effects only on devices that really have hover (not touch screens) */
 @media (hover: hover) {
   .S3-glow-card:hover {
     box-shadow:
@@ -227,7 +214,6 @@
   }
 }
 
-/* Border glow outer light */
 .S3-glow-card > .S3-edge-light {
   position: absolute;
   inset: calc(var(--glow-padding) * -1);
@@ -271,14 +257,13 @@
   transition: opacity 0.5s ease-in-out;
 }
 
-/* ===== Solid clean card inner ===== */
+/* ===== Solid card inner ===== */
 .S3-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
   border-radius: 20px;
-  /* Solid, opaque dark card background */
   background: #111411;
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
@@ -286,7 +271,6 @@
   overflow: hidden;
 }
 
-/* Professional top tab bar */
 .S3-card-tab-bar {
   display: inline-flex;
   align-items: center;
@@ -312,7 +296,6 @@
   color: #e4f796;
 }
 
-/* Card main area */
 .S3-card-main {
   position: relative;
   flex: 1;
@@ -323,7 +306,6 @@
   gap: 28px;
 }
 
-/* Card icon */
 .S3-card-icon-wrap {
   width: 56px;
   height: 56px;
@@ -339,7 +321,6 @@
   color: var(--accent, #c6f135);
 }
 
-/* Typography */
 .S3-card-body {
   display: flex;
   flex-direction: column;
@@ -363,12 +344,22 @@
   text-rendering: geometricPrecision;
 }
 
-/* ===== Responsive Layouts ===== */
-
-/* Laptops */
-@media screen and (max-width: 1280px) {
+/* ===== 1536px ===== */
+@media (max-width: 1536px) {
   .S3-services-inner {
+    padding: 0 40px;
+  }
+}
+
+/* ===== 1250px ===== */
+@media (max-width: 1250px) {
+  .S3-services-inner {
+    padding: 0 40px;
     gap: 36px;
+  }
+
+  .S3-heading {
+    font-size: clamp(34px, 3.8vw, 46px);
   }
 
   .S3-card-swap-viewport {
@@ -377,19 +368,35 @@
   }
 }
 
-/* Tablets */
-@media screen and (max-width: 1024px) {
+/* ===== 1024px ===== */
+@media (max-width: 1024px) {
   .S3-services-inner {
+    padding: 0 30px;
     grid-template-columns: 1fr;
     gap: 32px;
   }
 
   .S3-heading-wrap {
     max-width: 100%;
+    will-change: auto;
+  }
+
+  .S3-heading {
+    font-size: clamp(30px, 4vw, 40px);
+  }
+
+  .S3-heading-sub {
+    font-size: 16px;
+    max-width: 620px;
+  }
+
+  .S3-progress-row {
+    margin-top: 28px;
   }
 
   .S3-services-right {
     height: 460px;
+    padding-top: 80px;
   }
 
   .S3-card-swap-viewport {
@@ -399,24 +406,77 @@
   }
 }
 
-/* Mobile devices */
-@media screen and (max-width: 640px) {
-  .S3-services-pin-container {
-    height: 320vh;
-  }
-
-  .S3-services-sticky {
-    padding-top: 32px;
-    align-items: flex-start;
+/* ===== 768px ===== */
+@media (max-width: 768px) {
+  .S3-services-inner {
+    padding: 0 20px;
+    gap: 26px;
   }
 
   .S3-heading {
-    font-size: 32px;
+    font-size: clamp(28px, 5.2vw, 34px);
+  }
+
+  .S3-heading-sub {
+    font-size: 15.5px;
+    margin-top: 18px;
+  }
+
+  .S3-progress-row {
+    margin-top: 24px;
+    gap: 14px;
+  }
+
+  .S3-progress-bar-track {
+    width: 120px;
+  }
+
+  .S3-services-right {
+    height: 420px;
+    margin-top: 50px;
+  }
+
+  .S3-card-swap-viewport {
+    width: min(88vw, 420px);
+    height: 360px;
+  }
+
+  .S3-card-main {
+    padding: 30px 28px 32px;
+    gap: 22px;
+  }
+
+  .S3-card-title {
+    font-size: 24px;
+  }
+
+  .S3-card-desc {
+    font-size: 15.5px;
+  }
+}
+
+/* ===== 640px ===== */
+@media (max-width: 640px) {
+  .S3-services-pin-container {
+    height: calc(320vh + 150px);
+  }
+
+  .S3-services-sticky {
+    padding-top: 60px;
+    align-items: flex-start;
+  }
+
+  .S3-services-inner {
+    padding: 0 15px;
+  }
+
+  .S3-heading {
+    font-size: clamp(26px, 6vw, 32px);
   }
 
   .S3-heading-sub {
     font-size: 15px;
-    margin-top: 14px;
+    margin-top: 16px;
   }
 
   .S3-progress-row {
@@ -429,7 +489,7 @@
 
   .S3-services-right {
     height: 380px;
-    margin-top: 10px;
+    margin-top: 40px;
   }
 
   .S3-card-swap-viewport {
@@ -456,16 +516,72 @@
   }
 }
 
-/* Reduced motion mode: no pinning, no stack, just a normal list of cards */
+/* ===== 480px ===== */
+@media (max-width: 480px) {
+  .S3-services-sticky {
+    padding-top: 50px;
+  }
+
+  .S3-services-inner {
+    padding: 0 15px;
+    gap: 22px;
+  }
+
+  .S3-heading-eyebrow {
+    font-size: 12.5px;
+  }
+
+  .S3-heading {
+    font-size: clamp(24px, 7vw, 28px);
+    margin-top: 14px;
+  }
+
+  .S3-heading-sub {
+    font-size: 14.5px;
+    margin-top: 14px;
+  }
+
+  .S3-progress-counter {
+    font-size: 13px;
+  }
+
+  .S3-services-right {
+    height: 340px;
+    margin-top: 30px;
+  }
+
+  .S3-card-swap-viewport {
+    width: min(92vw, 310px);
+    height: 300px;
+  }
+
+  .S3-card-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+  }
+
+  .S3-card-title {
+    font-size: 20px;
+  }
+
+  .S3-card-desc {
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+}
+
+/* ===== Reduced motion ===== */
 @media (prefers-reduced-motion: reduce) {
   .S3-services-pin-container {
     height: auto;
+    padding: 100px 0 50px;
   }
 
   .S3-services-sticky {
-    position: relative; /* keeps the background glow positioned correctly */
+    position: relative;
     height: auto;
-    padding: 60px 10px;
+    padding: 0;
   }
 
   .S3-services-inner {

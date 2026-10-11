@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import "./Services.css";
 
-// 4 core services
 const services = [
   {
     tag: "Web Engineering",
@@ -48,7 +47,7 @@ const services = [
   },
 ];
 
-// Stacked echelon offsets: each card sits one step behind the previous
+// Slot positions: each card sits one step behind the previous.
 const SLOT_CONFIG = [
   { x: 0, y: 0, scale: 1 },
   { x: 40, y: -36, scale: 0.95 },
@@ -56,14 +55,12 @@ const SLOT_CONFIG = [
   { x: 120, y: -108, scale: 0.85 },
 ];
 
-// ===== Scroll timeline (built once, outside React) =====
-// Scroll progress 0 -> 1 is split into stages. At each stage every card moves
-// one slot forward, and the front card drops out and fades.
-// Precomputing keyframes here avoids running if/else logic on every frame.
+// ===== Scroll timeline =====
+// Keyframes are precomputed so no branching runs per animation frame.
 
 const STAGE_POINTS = [0.2, 0.45, 0.7, 0.95];
-const EXIT_Y = 650; // how far a dismissed card drops
-const EXIT_FADE = 0.22; // how long the fade-out takes (in scroll progress)
+const EXIT_Y = 650;
+const EXIT_FADE = 0.22;
 const LAST_INDEX = services.length - 1;
 
 function buildTrack(index, pick, exitValue) {
@@ -74,11 +71,10 @@ function buildTrack(index, pick, exitValue) {
   for (let stage = 0; stage < STAGE_POINTS.length - 1; stage += 1) {
     const end = STAGE_POINTS[stage + 1];
     if (slot > 0) {
-      slot -= 1; // moves one slot forward
+      slot -= 1;
       input.push(end);
       output.push(pick(slot));
     } else {
-      // card is in the front slot -> it drops out during this stage
       input.push(end);
       output.push(exitValue);
       break;
@@ -86,7 +82,7 @@ function buildTrack(index, pick, exitValue) {
   }
 
   input.push(1);
-  output.push(output[output.length - 1]); // hold the last value
+  output.push(output[output.length - 1]);
   return { input, output };
 }
 
@@ -98,7 +94,7 @@ const CARD_TRACKS = services.map((_, index) => {
     x: buildTrack(index, (s) => SLOT_CONFIG[s].x, 0),
     y: buildTrack(index, (s) => SLOT_CONFIG[s].y, EXIT_Y),
     scale: buildTrack(index, (s) => SLOT_CONFIG[s].scale, 1),
-    // The last card never fades out
+    // The last card stays visible.
     opacity:
       index === LAST_INDEX
         ? { input: [0, 1], output: [1, 1] }
@@ -108,7 +104,7 @@ const CARD_TRACKS = services.map((_, index) => {
 });
 
 // ===== Card =====
-// memo(): cards don't re-render when the "Service 01 of 04" counter changes
+// memo() so cards skip re-rendering when "Service 0X of 04" ticks.
 const CleanCard = memo(function CleanCard({
   service,
   index,
@@ -119,7 +115,6 @@ const CleanCard = memo(function CleanCard({
   const track = CARD_TRACKS[index];
   const isLast = index === LAST_INDEX;
 
-  // Border glow pointer physics
   const cardRef = useRef(null);
   const frameRef = useRef(0);
   const pointRef = useRef({ x: 0, y: 0 });
@@ -147,10 +142,10 @@ const CleanCard = memo(function CleanCard({
     card.style.setProperty("--cursor-angle", `${angle.toFixed(2)}deg`);
   }, []);
 
-  // At most one style update per frame (pointermove can fire much more often)
+  // Cap style writes to one per frame — pointermove can fire much faster.
   const handlePointerMove = useCallback(
     (e) => {
-      // no glow on touch, saves work while scrolling
+      // Skip touch: the glow is meaningless while a finger is scrolling.
       if (e.pointerType === "touch") return;
       pointRef.current.x = e.clientX;
       pointRef.current.y = e.clientY;
@@ -188,7 +183,7 @@ const CleanCard = memo(function CleanCard({
     track.opacity.input,
     track.opacity.output,
   );
-  // A dismissed (invisible) card must not catch the mouse
+  // A faded-out card must not intercept the pointer.
   const cardPointerEvents = useTransform(smoothProgress, (p) =>
     !isLast && p > track.exitEnd ? "none" : "auto",
   );
@@ -211,18 +206,15 @@ const CleanCard = memo(function CleanCard({
               zIndex: 10 - index,
             }
       }>
-      {/* Border glow light */}
       <span className="S3-edge-light" aria-hidden="true" />
 
-      {/* Each service is self-contained, so <article> fits */}
+      {/* Each service is self-contained, so <article> fits. */}
       <article className="S3-card-inner">
-        {/* Top tab bar */}
         <div className="S3-card-tab-bar">
           <span className="S3-tab-dot" aria-hidden="true" />
           <span className="S3-tab-category">{service.tag}</span>
         </div>
 
-        {/* Card content */}
         <div className="S3-card-main">
           <div className="S3-card-icon-wrap">
             <Icon
@@ -248,6 +240,18 @@ export default function Services() {
   const containerRef = useRef(null);
   const reduceMotion = useReducedMotion();
   const [activeStep, setActiveStep] = useState(1);
+  // Below 1024px the heading sits directly under the previous section, so the
+  // scroll-linked entrance reads as broken there. Freeze the text; cards keep
+  // their motion.
+  const [isCompact, setIsCompact] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1024px)");
+    const update = () => setIsCompact(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -260,7 +264,7 @@ export default function Services() {
     restDelta: 0.001,
   });
 
-  // React skips the re-render when the step did not change
+  // Skip the re-render when the step number didn't change.
   useMotionValueEvent(smoothProgress, "change", (latest) => {
     if (latest < 0.28) setActiveStep(1);
     else if (latest < 0.54) setActiveStep(2);
@@ -268,10 +272,11 @@ export default function Services() {
     else setActiveStep(4);
   });
 
-  // Title enters from top and settles into center
   const titleY = useTransform(smoothProgress, [0, 0.2], [-70, 0]);
   const titleOpacity = useTransform(smoothProgress, [0, 0.12], [0.4, 1]);
   const hintOpacity = useTransform(smoothProgress, [0, 0.08], [1, 0]);
+
+  const textIsStatic = reduceMotion || isCompact;
 
   return (
     <section
@@ -281,12 +286,11 @@ export default function Services() {
       className="S3-services-pin-container">
       <div className="S3-services-sticky">
         <div className="S3-services-inner">
-          {/* Left column: heading & progress */}
           <div className="S3-services-left">
             <motion.div
               style={{
-                y: reduceMotion ? 0 : titleY,
-                opacity: reduceMotion ? 1 : titleOpacity,
+                y: textIsStatic ? 0 : titleY,
+                opacity: textIsStatic ? 1 : titleOpacity,
               }}
               className="S3-heading-wrap">
               <p className="S3-heading-eyebrow">
@@ -303,7 +307,6 @@ export default function Services() {
                 operate and scale.
               </p>
 
-              {/* Progress indicator (visual only: all 4 services are in the page text) */}
               <div className="S3-progress-row" aria-hidden="true">
                 <div className="S3-progress-bar-track">
                   <motion.div
@@ -321,9 +324,8 @@ export default function Services() {
                 </div>
               </div>
 
-              {/* Scroll prompt */}
               <motion.div
-                style={{ opacity: hintOpacity }}
+                style={{ opacity: textIsStatic ? 1 : hintOpacity }}
                 className="S3-scroll-hint"
                 aria-hidden="true">
                 <ArrowDownIcon size={15} className="S3-hint-arrow" />
@@ -332,7 +334,7 @@ export default function Services() {
             </motion.div>
           </div>
 
-          {/* Right column: stacked cards. A real list: screen readers say "list, 4 items" */}
+          {/* A real list so screen readers announce "list, 4 items". */}
           <div className="S3-services-right">
             <ul className="S3-card-swap-viewport" role="list">
               {services.map((service, index) => (

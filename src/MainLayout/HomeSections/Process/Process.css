@@ -2,21 +2,19 @@
 .S4-process {
   position: relative;
   width: 100%;
-  padding: 50px 0 180px 0;
+  padding: 50px 40px 180px;
   background-color: #0a0a0a;
   overflow: hidden;
 }
 
-/* Strictly constrained inner container: max-width 1536px, 10px padding */
+/* Strictly constrained inner container: max-width 1536px, no extra padding */
 .S4-process-inner {
   width: 100%;
   max-width: 1536px;
   margin: 0 auto;
-  padding: 0 10px;
-  box-sizing: border-box;
 }
 
-/* Heading block */
+/* ===== Heading ===== */
 .S4-heading-wrap {
   max-width: 672px;
 }
@@ -44,7 +42,7 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/* Track container */
+/* ===== Track and connector ===== */
 .S4-process-track {
   position: relative;
   margin-top: 88px;
@@ -86,7 +84,7 @@
   transform: scaleX(1);
 }
 
-/* 3-column list */
+/* ===== Step list ===== */
 .S4-process-list {
   position: relative;
   display: grid;
@@ -126,23 +124,6 @@
     transform 0.25s ease;
 }
 
-.S4-num-text {
-  position: relative;
-  z-index: 2;
-}
-
-/* Soft ambient dot indicator */
-.S4-num-ping {
-  position: absolute;
-  inset: -1px;
-  border-radius: 50%;
-  border: 1px solid transparent;
-  transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
-  pointer-events: none;
-}
-
 /* Step typography */
 .S4-process-step-title {
   margin: 28px 0 0;
@@ -162,7 +143,7 @@
 }
 
 /* Subtle interactive hover */
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .S4-process-step:hover .S4-process-num {
     border-color: var(--accent, #c6f135);
     background: #111511;
@@ -191,59 +172,121 @@
   transform: translateY(0);
 }
 
-/* ===== Responsive Layouts ===== */
-
-/* Tablets */
-@media screen and (max-width: 1024px) {
+/* ===== 1536px ===== */
+@media (max-width: 1536px) {
   .S4-process {
-    padding: 96px 0;
-  }
-
-  .S4-heading {
-    font-size: 40px;
-  }
-
-  .S4-process-track {
-    margin-top: 68px;
-  }
-
-  .S4-process-list {
-    gap: 28px;
+    padding: 50px 40px 170px;
   }
 }
 
-/* Mobile: switches to a clean vertical timeline */
-@media screen and (max-width: 768px) {
+/* ===== 1250px ===== */
+@media (max-width: 1250px) {
   .S4-process {
-    padding: 80px 0;
+    padding: 50px 40px 150px;
   }
 
   .S4-heading {
-    font-size: 32px;
+    font-size: clamp(34px, 3.8vw, 46px);
   }
 
   .S4-process-track {
-    margin-top: 56px;
+    margin-top: 74px;
+  }
+
+  .S4-process-list {
+    gap: 32px;
+  }
+}
+
+/* ===== 1024px ===== */
+@media (max-width: 1024px) {
+  .S4-process {
+    padding: 48px 30px 130px;
+  }
+
+  .S4-heading {
+    font-size: clamp(30px, 4vw, 40px);
+  }
+
+  .S4-process-track {
+    margin-top: 62px;
+  }
+
+  .S4-process-list {
+    gap: 24px;
+  }
+
+  .S4-process-num {
+    width: 42px;
+    height: 42px;
+  }
+
+  .S4-process-connector-base,
+  .S4-process-connector-active {
+    top: 21px;
+  }
+
+  .S4-process-step-title {
+    font-size: 18.5px;
+  }
+
+  .S4-process-step-desc {
+    font-size: 15px;
+  }
+}
+
+/* ===== 768px: vertical timeline, centered heading ===== */
+@media (max-width: 768px) {
+  .S4-process {
+    padding: 80px 20px 110px;
+  }
+
+  .S4-heading-wrap {
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .S4-heading-eyebrow {
+    font-size: 13px;
+  }
+
+  .S4-heading {
+    font-size: clamp(28px, 5.2vw, 34px);
+    margin-top: 12px;
+  }
+
+  .S4-process-track {
+    margin-top: 50px;
   }
 
   .S4-process-list {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 34px;
+    max-width: 520px;
+    margin: 0 auto;
   }
 
-  /* Connector flips to a vertical line */
+  /* Connector flips to vertical. Height is bound to the list so the line
+     lands on the first and last circle centres, not the track's outer box. */
   .S4-process-connector-base,
   .S4-process-connector-active {
     top: 22px;
+    bottom: auto;
     left: 21px;
     right: auto;
-    bottom: 22px;
     width: 1px;
-    height: auto;
+    height: calc(100% - 44px);
     transform-origin: top center;
   }
 
   .S4-process-connector-active {
+    background: linear-gradient(
+      180deg,
+      #c6f135cc 0%,
+      #c6f13566 60%,
+      #ffffff33 100%
+    );
     transform: scaleY(0);
   }
 
@@ -263,26 +306,36 @@
 
   .S4-process-step-title {
     margin-top: 0;
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .S4-process-step-desc {
     max-width: 100%;
-    font-size: 15px;
+    font-size: 14.5px;
   }
 }
 
-@media screen and (max-width: 480px) {
+/* ===== 640px ===== */
+@media (max-width: 640px) {
   .S4-process {
-    padding: 64px 0;
+    padding: 72px 15px 96px;
   }
 
   .S4-heading {
-    font-size: 28px;
+    font-size: clamp(26px, 6vw, 32px);
+  }
+
+  .S4-process-track {
+    margin-top: 42px;
+  }
+
+  .S4-process-list {
+    gap: 30px;
+    max-width: 480px;
   }
 
   .S4-process-step {
-    padding-left: 60px;
+    padding-left: 62px;
   }
 
   .S4-process-num {
@@ -293,11 +346,71 @@
 
   .S4-process-connector-base,
   .S4-process-connector-active {
+    top: 20px;
     left: 19px;
+    height: calc(100% - 40px);
+  }
+
+  .S4-process-step-title {
+    font-size: 17px;
+  }
+
+  .S4-process-step-desc {
+    font-size: 14px;
   }
 }
 
-/* Reduced motion mode */
+/* ===== 480px ===== */
+@media (max-width: 480px) {
+  .S4-process {
+    padding: 64px 15px 84px;
+  }
+
+  .S4-heading-eyebrow {
+    font-size: 12px;
+  }
+
+  .S4-heading {
+    font-size: clamp(24px, 7vw, 28px);
+  }
+
+  .S4-process-track {
+    margin-top: 36px;
+  }
+
+  .S4-process-list {
+    gap: 26px;
+    max-width: 100%;
+  }
+
+  .S4-process-step {
+    padding-left: 56px;
+  }
+
+  .S4-process-num {
+    width: 36px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .S4-process-connector-base,
+  .S4-process-connector-active {
+    top: 18px;
+    left: 17px;
+    height: calc(100% - 36px);
+  }
+
+  .S4-process-step-title {
+    font-size: 16px;
+  }
+
+  .S4-process-step-desc {
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+}
+
+/* ===== Reduced motion ===== */
 @media (prefers-reduced-motion: reduce) {
   [data-reveal] {
     opacity: 1;
