@@ -8,20 +8,18 @@
 
   position: relative;
   width: 100%;
-  padding: 80px 0 32px;
+  padding: 100px 40px 50px;
   background: #070a07;
   border-top: 1px solid #ffffff0f;
+  box-sizing: border-box;
 }
 
 .S8-footer-inner {
   width: 100%;
   max-width: 1536px;
   margin: 0 auto;
-  padding: 0 10px;
-  box-sizing: border-box;
 }
 
-/* Top: brand + 3 columns */
 .S8-footer-top {
   display: grid;
   grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
@@ -57,7 +55,6 @@
   color: var(--S8-text-muted);
 }
 
-/* Social icons */
 .S8-footer-socials {
   display: flex;
   gap: 8px;
@@ -162,19 +159,40 @@
   color: var(--S8-text-dim);
 }
 
-/* ===== Responsive__ */
-
-@media screen and (max-width: 1024px) {
+/* ===== 1536px ===== */
+@media (max-width: 1536px) {
   .S8-footer {
-    padding: 64px 0 28px;
+    padding: 100px 40px 50px;
+  }
+}
+
+/* ===== 1250px ===== */
+@media (max-width: 1250px) {
+  .S8-footer {
+    padding: 100px 40px 50px;
+  }
+
+  .S8-footer-top {
+    gap: 40px;
+  }
+
+  .S8-footer-bottom {
+    margin-top: 56px;
+  }
+}
+
+/* ===== 1024px ===== */
+@media (max-width: 1024px) {
+  .S8-footer {
+    padding: 100px 30px 50px;
   }
 
   .S8-footer-top {
     grid-template-columns: 1.4fr 1fr 1fr;
-    gap: 40px;
+    gap: 36px;
   }
 
-  /* "Get in touch" drops to a new row spanning everything */
+  /* "Get in touch" drops to a full-width row with a divider above it. */
   .S8-footer-top > .S8-footer-col:last-child {
     grid-column: 1 / -1;
     padding-top: 32px;
@@ -186,44 +204,102 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+/* ===== 768px: centered, 2-column nav ===== */
+@media (max-width: 768px) {
   .S8-footer {
-    padding: 56px 0 24px;
+    padding: 100px 20px 50px;
   }
 
   .S8-footer-top {
     grid-template-columns: 1fr 1fr;
-    gap: 32px;
+    gap: 40px 32px;
+    text-align: center;
   }
 
   .S8-footer-brand {
     grid-column: 1 / -1;
-  }
-
-  .S8-footer-bottom {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    margin-top: 40px;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .S8-footer {
-    padding: 48px 0 20px;
-  }
-
-  .S8-footer-top {
-    grid-template-columns: 1fr;
-    gap: 32px;
+    align-items: center;
   }
 
   .S8-footer-tagline {
     max-width: 100%;
   }
+
+  .S8-footer-socials {
+    justify-content: center;
+  }
+
+  .S8-footer-list {
+    align-items: center;
+  }
+
+  /* Drop the divider — grid reflows to 2 columns here. */
+  .S8-footer-top > .S8-footer-col:last-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .S8-footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    margin-top: 40px;
+  }
 }
 
-/* Reduced motion */
+/* ===== 640px: single column ===== */
+@media (max-width: 640px) {
+  .S8-footer {
+    padding: 100px 15px 50px;
+  }
+
+  .S8-footer-top {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .S8-footer-col-title {
+    margin-bottom: 14px;
+  }
+
+  .S8-footer-link {
+    font-size: 14.5px;
+  }
+}
+
+/* ===== 480px ===== */
+@media (max-width: 480px) {
+  .S8-footer {
+    padding: 100px 15px 50px;
+  }
+
+  .S8-footer-top {
+    gap: 32px;
+  }
+
+  .S8-footer-logo {
+    font-size: 20px;
+  }
+
+  .S8-footer-tagline {
+    font-size: 14.5px;
+  }
+
+  .S8-footer-social {
+    width: 38px;
+    height: 38px;
+  }
+
+  .S8-footer-copy,
+  .S8-footer-credit {
+    font-size: 12.5px;
+  }
+}
+
+/* ===== Reduced motion ===== */
 @media (prefers-reduced-motion: reduce) {
   .S8-footer-logo,
   .S8-footer-social,

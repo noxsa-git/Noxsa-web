@@ -39,7 +39,6 @@ const LinkedInIcon = ({ size = 18 }) => (
   </svg>
 );
 
-// Contact + social details
 const emailAddress = "noxsahq@gmail.com";
 const whatsappNumber = "+880 1300-061300";
 const whatsappUrl = "https://wa.me/8801300061300";
@@ -62,7 +61,6 @@ const socials = [
   },
 ];
 
-// Footer navigation columns
 const navGroups = [
   {
     title: "Explore",
