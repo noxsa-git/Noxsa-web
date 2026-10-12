@@ -61,6 +61,14 @@ function useRevealOnScroll(rootRef) {
   }, [rootRef]);
 }
 
+function handleContactClick(event) {
+  const contactSection = document.getElementById("contact");
+  if (!contactSection) return;
+
+  event.preventDefault();
+  contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 // ===== Our Work Section =====
 export default function OurWork() {
   const sectionRef = useRef(null);
@@ -143,7 +151,10 @@ export default function OurWork() {
               Let&rsquo;s build your blueprint together.
             </p>
           </div>
-          <a href="#contact" className="S6-cta-btn-pill">
+          <a
+            href="#contact"
+            onClick={handleContactClick}
+            className="S6-cta-btn-pill">
             <span>Start a Project</span>
             <ArrowRightIcon
               size={16}

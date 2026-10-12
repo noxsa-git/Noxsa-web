@@ -130,8 +130,21 @@ function isHighlight(word, highlight) {
 }
 
 function HeroButton({ href, variant = "primary", children }) {
+  const handleClick = (event) => {
+    if (!href.startsWith("#")) return;
+
+    const targetSection = document.getElementById(href.slice(1));
+    if (!targetSection) return;
+
+    event.preventDefault();
+    targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
-    <a href={href} className={`S1-btn S1-btn--${variant}`}>
+    <a
+      href={href}
+      onClick={handleClick}
+      className={`S1-btn S1-btn--${variant}`}>
       {children}
     </a>
   );
@@ -318,7 +331,7 @@ function S1Hero({ ready = true }) {
               <span>Start a Project</span>
               <ArrowRightIcon size={16} aria-hidden="true" />
             </HeroButton>
-            <HeroButton href="#work" variant="secondary">
+            <HeroButton href="#services" variant="secondary">
               <span>Explore</span>
             </HeroButton>
           </motion.div>

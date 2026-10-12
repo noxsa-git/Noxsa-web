@@ -11,8 +11,6 @@ import Footer from "../HomeSections/Footer/Footer";
 import LampCta from "../HomeSections/WhoWeAre/WhoWeAre";
 import MainLoading from "../../Components/MainLoading/MainLoading";
 
-// Short tail. Long durations (1.1+) keep firing scroll events after the user
-// stops — every extra frame redraws the Services pin. Keep it tight.
 const LENIS_OPTIONS = {
   duration: 0.8,
   wheelMultiplier: 0.9,
@@ -46,8 +44,6 @@ const Main = () => {
     };
   }, []);
 
-  // Let the loader's own body-overflow lock do its job — no coordination
-  // needed here. This keeps MainLoading free of scroll concerns.
   useEffect(() => {
     if (!isLoading && lenisRef.current) {
       lenisRef.current.scrollTo(0, { immediate: true });

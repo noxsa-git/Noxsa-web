@@ -65,21 +65,33 @@ const navGroups = [
   {
     title: "Explore",
     links: [
+      { label: "Home", href: "#top" },
       { label: "Services", href: "#services" },
-      { label: "Work", href: "#work" },
       { label: "Process", href: "#process" },
       { label: "Why us", href: "#why" },
+      { label: "Our work", href: "#work" },
+      { label: "Who we are", href: "#who" },
+      { label: "Contact", href: "#contact" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "Contact", href: "#contact" },
       { label: "Privacy Policy", href: "/privacy" },
       { label: "Terms of Service", href: "/terms" },
     ],
   },
 ];
+
+function handleSectionClick(event, href) {
+  if (!href.startsWith("#")) return;
+
+  const section = document.getElementById(href.slice(1));
+  if (!section) return;
+
+  event.preventDefault();
+  section.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
 // ===== Footer =====
 export default function Footer() {
@@ -124,7 +136,10 @@ export default function Footer() {
               <ul className="S8-footer-list" role="list">
                 {group.links.map((link) => (
                   <li key={link.label}>
-                    <a href={link.href} className="S8-footer-link">
+                    <a
+                      href={link.href}
+                      onClick={(event) => handleSectionClick(event, link.href)}
+                      className="S8-footer-link">
                       {link.label}
                     </a>
                   </li>

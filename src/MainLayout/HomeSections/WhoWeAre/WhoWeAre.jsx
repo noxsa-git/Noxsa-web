@@ -92,12 +92,23 @@ function TeamCard({ member }) {
   );
 }
 
+function handleContactClick(event) {
+  const contactSection = document.getElementById("contact");
+  if (!contactSection) return;
+
+  event.preventDefault();
+  contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 export default function WhoWeAre() {
   const [isOn, setIsOn] = useState(true);
   const toggleLamp = () => setIsOn((v) => !v);
 
   return (
-    <section className="S7-who-section" aria-labelledby="who-title">
+    <section
+      id="who"
+      className="S7-who-section"
+      aria-labelledby="who-title">
       <div className="S7-who-inner">
         <div className="S7-lamp-stage">
           {/* A div is used here (not <button>) because the lamp is drawn from
@@ -175,7 +186,10 @@ export default function WhoWeAre() {
         </ul>
 
         <div className="S7-actions">
-          <a href="#contact" className="S7-story-cta">
+          <a
+            href="#contact"
+            onClick={handleContactClick}
+            className="S7-story-cta">
             <span>Work with us</span>
             <ArrowRightIcon size={15} aria-hidden="true" />
           </a>
