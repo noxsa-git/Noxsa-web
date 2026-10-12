@@ -9,21 +9,21 @@ const teamMembers = [
     position: "Co-Founder",
     role: "Lead Developer",
     image:
-      "https://res.cloudinary.com/ysbpcq4w/image/upload/v1791558751/Sobur.png",
+      "https://res.cloudinary.com/ysbpcq4w/image/upload/v1791741274/1.webp",
   },
   {
     name: "Aminul Islam",
     position: "Co-Founder",
     role: "Creative Lead",
     image:
-      "https://res.cloudinary.com/ysbpcq4w/image/upload/v1791558755/Amin.png",
+      "https://res.cloudinary.com/ysbpcq4w/image/upload/v1791741282/2.webp",
   },
   {
     name: "Marufur Rahman",
     position: "Co-Founder",
     role: "Marketing Manager",
     image:
-      "https://res.cloudinary.com/ysbpcq4w/image/upload/v1791558751/Fahim.png",
+      "https://res.cloudinary.com/ysbpcq4w/image/upload/v1791741291/3.webp",
   },
 ];
 
