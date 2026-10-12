@@ -137,7 +137,7 @@ function HeroButton({ href, variant = "primary", children }) {
   );
 }
 
-function S1Hero() {
+function S1Hero({ ready = true }) {
   const [index, setIndex] = useState(0);
   const brandAnchorRef = useRef(null);
   const reduce = useReducedMotion();
@@ -184,14 +184,15 @@ function S1Hero() {
   const { text, highlight } = taglines[index];
   const words = useMemo(() => text.split(" "), [text]);
 
-  // Stable transition descriptor generator (only rebuilds if reduced-motion changes)
+  // Entrance waits for `ready` (loader exited). Until then, everything stays
+  // in its hidden pose so nothing plays behind the loading overlay.
   const makeFade = useCallback(
     (delay) => ({
       initial: reduce ? false : { opacity: 0, y: 16 },
-      animate: { opacity: 1, y: 0 },
+      animate: ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 },
       transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1], delay },
     }),
-    [reduce],
+    [reduce, ready],
   );
 
   const subtitleFade = useMemo(() => makeFade(0.08), [makeFade]);
@@ -287,7 +288,7 @@ function S1Hero() {
                   key={index}
                   className="S1-hero-title-line"
                   initial="hidden"
-                  animate="show"
+                  animate={ready ? "show" : "hidden"}
                   exit="exit">
                   {words.map((word, i) => (
                     <Fragment key={`${index}-${i}`}>
@@ -327,7 +328,7 @@ function S1Hero() {
   );
 }
 
-export default function Hero() {
+export default function Hero({ ready = true }) {
   return (
     <>
       <Helmet>
@@ -375,7 +376,7 @@ export default function Hero() {
         />
       </Helmet>
       <main className="home">
-        <S1Hero />
+        <S1Hero ready={ready} />
       </main>
     </>
   );

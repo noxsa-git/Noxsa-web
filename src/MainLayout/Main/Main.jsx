@@ -15,10 +15,10 @@ const Main = () => {
 
   return (
     <>
-      {/* Sections mount immediately so the loading overlay hides real work,
-          not an empty page. They stay in the DOM after the overlay leaves. */}
+      {/* Hero receives `ready` so its entrance waits until the loader
+          uncovers the page — otherwise it plays behind the overlay. */}
       <div>
-        <Hero />
+        <Hero ready={!isLoading} />
         <Tools />
         <Services />
         <Process />
